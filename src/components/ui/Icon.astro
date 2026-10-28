@@ -3,12 +3,16 @@ import { getIconData, iconToSVG, replaceIDs } from '@iconify/utils';
 import type { IconifyJSON } from '@iconify/types';
 import bootstrapIcons from '@iconify-json/bi/icons.json';
 import devicon from '@iconify-json/devicon/icons.json';
+import deviconPlain from '@iconify-json/devicon-plain/icons.json';
 import type { IconName } from '@/lib/icons';
 
 const collections: Record<string, IconifyJSON> = {
   bi: bootstrapIcons as IconifyJSON,
   devicon: devicon as IconifyJSON,
+  'devicon-plain': deviconPlain as IconifyJSON,
 };
+
+const MAX_BODY_LENGTH = 16_000;
 
 interface Props {
   name: IconName;
@@ -29,6 +33,12 @@ const svg = iconToSVG(data, { height: '1em' });
 
 if (/\sstyle\s*=/.test(svg.body)) {
   throw new Error(`Ícone com estilo inline é incompatível com a CSP: ${name}`);
+}
+
+if (svg.body.length > MAX_BODY_LENGTH) {
+  throw new Error(
+    `Ícone muito pesado (${svg.body.length} caracteres): ${name}. Use a variante devicon-plain.`,
+  );
 }
 
 const body = replaceIDs(svg.body);

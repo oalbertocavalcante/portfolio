@@ -217,7 +217,7 @@ export const pt = {
       { name: 'TypeScript', icon: 'devicon:typescript', level: 80 },
       { name: 'React', icon: 'devicon:react', level: 75 },
       { name: 'Docker', icon: 'devicon:docker', level: 70 },
-      { name: 'Linux', icon: 'devicon:linux', level: 85 },
+      { name: 'Linux', icon: 'devicon-plain:linux', level: 85 },
     ],
   },
   testimonials: {
