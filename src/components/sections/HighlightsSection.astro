@@ -1,0 +1,186 @@
+---
+import PageSection from '@/components/layout/PageSection.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import type { SiteContent } from '@/data/types';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const { highlights, anchors } = content;
+const headingId = 'highlights-title';
+---
+
+{highlights.items.length > 0 && (
+  <PageSection
+    section="highlights"
+    anchor={anchors.highlights}
+    tone="band"
+    labelledBy={headingId}
+    class="highlights"
+  >
+    <div class="container">
+      <SectionHeading
+        id={headingId}
+        variant="eyebrow"
+        eyebrow={highlights.eyebrow}
+        title={highlights.title}
+      />
+      <ul class="highlights__grid list-reset">
+        {highlights.items.map((item, index) => (
+          <li class="highlights__item">
+            <article class="highlight-card" data-reveal data-reveal-delay={String(4 + index)}>
+              <span class="highlight-card__icon">
+                <Icon name={item.icon} />
+              </span>
+              <h3 class="highlight-card__title">{item.title}</h3>
+              <p class="highlight-card__description">{item.description}</p>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </PageSection>
+)}
+
+<style>
+  .highlights {
+    padding: var(--space-section) 0 90px;
+  }
+
+  .highlights__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .highlights__item {
+    display: flex;
+    justify-content: center;
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+    padding-inline: var(--gutter);
+  }
+
+  .highlight-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 415px;
+    margin-bottom: 30px;
+    padding: 50px 30px 40px;
+    border: 1px solid rgb(57 211 83 / 0.15);
+    border-radius: 12px;
+    background-color: var(--color-surface);
+  }
+
+  .highlight-card::before,
+  .highlight-card::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 0;
+    height: 0;
+    border-radius: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s;
+  }
+
+  .highlight-card::before {
+    top: 0;
+    left: 0;
+    border-top: 1px solid var(--color-accent);
+    border-left: 1px solid var(--color-accent);
+  }
+
+  .highlight-card::after {
+    right: 0;
+    bottom: 0;
+    border-right: 1px solid var(--color-accent);
+    border-bottom: 1px solid var(--color-accent);
+  }
+
+  .highlight-card:hover::before,
+  .highlight-card:hover::after {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .highlight-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 45px;
+    border-radius: 50%;
+    background: linear-gradient(
+      90deg,
+      var(--color-accent-emphasis) 0%,
+      var(--color-accent-deep) 110.61%
+    );
+    color: var(--color-on-emphasis);
+    font-size: 30px;
+  }
+
+  .highlight-card__icon :global(.icon) {
+    transition: transform 0.5s ease;
+  }
+
+  .highlight-card:hover .highlight-card__icon :global(.icon) {
+    transform: scaleX(-1);
+  }
+
+  .highlight-card__title {
+    margin-bottom: 28px;
+    font-size: var(--fs-h4);
+    letter-spacing: -0.02em;
+  }
+
+  .highlight-card__description {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 1199.98px) {
+    .highlights {
+      padding-bottom: 70px;
+    }
+
+    .highlight-card {
+      padding: 30px 15px;
+    }
+
+    .highlight-card__icon {
+      margin-bottom: 25px;
+    }
+
+    .highlight-card__title {
+      margin-bottom: 15px;
+      font-size: 1.375rem;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .highlights__item {
+      flex-basis: 50%;
+      max-width: 50%;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .highlights {
+      padding-bottom: 50px;
+    }
+
+    .highlights__item {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
+  }
+</style>

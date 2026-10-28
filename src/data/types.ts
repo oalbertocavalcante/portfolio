@@ -1,3 +1,5 @@
+import type { IconName } from '@/lib/icons';
+
 export type SectionKey =
   | 'intro'
   | 'highlights'
@@ -55,6 +57,18 @@ export interface StatItem {
   label: string;
 }
 
+export interface HighlightItem {
+  icon: IconName;
+  title: string;
+  description: string;
+}
+
+export interface HighlightsContent {
+  eyebrow: string;
+  title: string;
+  items: HighlightItem[];
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -64,4 +78,5 @@ export interface SiteContent {
   hero: HeroContent;
   stats: StatItem[];
   roles: string[];
+  highlights: HighlightsContent;
 }

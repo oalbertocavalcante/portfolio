@@ -3,13 +3,12 @@ import { getIconData, iconToSVG, replaceIDs } from '@iconify/utils';
 import type { IconifyJSON } from '@iconify/types';
 import bootstrapIcons from '@iconify-json/bi/icons.json';
 import devicon from '@iconify-json/devicon/icons.json';
+import type { IconName } from '@/lib/icons';
 
 const collections: Record<string, IconifyJSON> = {
   bi: bootstrapIcons as IconifyJSON,
   devicon: devicon as IconifyJSON,
 };
-
-export type IconName = `${'bi' | 'devicon'}:${string}`;
 
 interface Props {
   name: IconName;

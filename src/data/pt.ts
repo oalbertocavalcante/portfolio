@@ -66,4 +66,28 @@ export const pt = {
     'Automação',
     'Cloud',
   ],
+  highlights: {
+    eyebrow: 'Diferenciais',
+    title: 'O que eu entrego',
+    items: [
+      {
+        icon: 'bi:code-slash',
+        title: 'Código limpo',
+        description:
+          'Soluções legíveis, testadas e fáceis de manter, seguindo boas práticas de engenharia.',
+      },
+      {
+        icon: 'bi:shield-lock',
+        title: 'Segurança desde o início',
+        description:
+          'Atenção a vulnerabilidades e boas práticas de segurança em cada etapa do desenvolvimento.',
+      },
+      {
+        icon: 'bi:rocket-takeoff',
+        title: 'Entrega com foco',
+        description:
+          'Comunicação clara, prazos realistas e acompanhamento próximo do início ao fim.',
+      },
+    ],
+  },
 } satisfies SiteContent;

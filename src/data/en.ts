@@ -65,4 +65,28 @@ export const en = {
     'Automation',
     'Cloud',
   ],
+  highlights: {
+    eyebrow: 'Strengths',
+    title: 'What I deliver',
+    items: [
+      {
+        icon: 'bi:code-slash',
+        title: 'Clean code',
+        description:
+          'Readable, tested and maintainable solutions that follow solid engineering practices.',
+      },
+      {
+        icon: 'bi:shield-lock',
+        title: 'Security from day one',
+        description:
+          'Attention to vulnerabilities and security best practices at every development stage.',
+      },
+      {
+        icon: 'bi:rocket-takeoff',
+        title: 'Focused delivery',
+        description:
+          'Clear communication, realistic deadlines and close follow-up from start to finish.',
+      },
+    ],
+  },
 } satisfies SiteContent;

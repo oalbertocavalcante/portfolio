@@ -1,0 +1,129 @@
+---
+import type { IconName } from '@/lib/icons';
+import Icon from './Icon.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  description?: string | undefined;
+  eyebrow?: string | undefined;
+  icon?: IconName | undefined;
+  variant?: 'gradient' | 'eyebrow';
+  align?: 'center' | 'start';
+  class?: string;
+}
+
+const {
+  id,
+  title,
+  description,
+  eyebrow,
+  icon,
+  variant = 'gradient',
+  align = 'center',
+  class: className,
+} = Astro.props;
+---
+
+<header
+  class:list={[
+    'section-heading',
+    `section-heading--${variant}`,
+    `section-heading--${align}`,
+    className,
+  ]}
+>
+  {eyebrow && (
+    <p class="section-heading__eyebrow" data-reveal data-reveal-delay="3">
+      {eyebrow}
+    </p>
+  )}
+  <h2 class="section-heading__title" id={id} data-reveal data-reveal-delay="4">
+    {icon && <Icon name={icon} class="section-heading__icon" />}
+    <span class="section-heading__text">{title}</span>
+  </h2>
+  {description && (
+    <p class="section-heading__description" data-reveal data-reveal-delay="5">
+      {description}
+    </p>
+  )}
+</header>
+
+<style>
+  .section-heading--center {
+    max-width: 660px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .section-heading__title {
+    margin-bottom: 0;
+  }
+
+  .section-heading--gradient .section-heading__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    font-size: var(--fs-section-title);
+  }
+
+  .section-heading--gradient .section-heading__text {
+    background-image: var(--gradient-title);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .section-heading__title :global(.section-heading__icon) {
+    color: var(--color-accent);
+    font-size: 0.8em;
+  }
+
+  .section-heading__description {
+    margin: 15px 0 0;
+  }
+
+  .section-heading--eyebrow {
+    margin-bottom: 60px;
+  }
+
+  .section-heading__eyebrow {
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .section-heading--eyebrow .section-heading__title {
+    font-size: 2.75rem;
+    font-weight: var(--fw-semibold);
+  }
+
+  @media (max-width: 1199.98px) {
+    .section-heading--eyebrow .section-heading__title {
+      font-size: 2.5rem;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .section-heading--eyebrow {
+      margin-bottom: 40px;
+    }
+
+    .section-heading--eyebrow .section-heading__title {
+      font-size: 2.375rem;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .section-heading__eyebrow {
+      margin-bottom: 15px;
+    }
+
+    .section-heading--eyebrow .section-heading__title {
+      font-size: 2rem;
+    }
+  }
+</style>
