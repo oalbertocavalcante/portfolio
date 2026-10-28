@@ -1,0 +1,273 @@
+---
+import PageSection from '@/components/layout/PageSection.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import type { SiteContent } from '@/data/types';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const { services, anchors } = content;
+const headingId = 'services-title';
+---
+
+{services.items.length > 0 && (
+  <PageSection
+    section="services"
+    anchor={anchors.services}
+    tone="band-alt"
+    labelledBy={headingId}
+    class="services"
+  >
+    <div class="container-wide">
+      <SectionHeading
+        id={headingId}
+        title={services.title}
+        description={services.description}
+        class="services__heading"
+      />
+      <div class="services__list" data-services>
+        <ul class="list-reset">
+          {services.items.map((item, index) => (
+            <li
+              class:list={['service-item', { 'is-current': index === 0 }]}
+              data-service-item
+              data-reveal
+              data-reveal-delay={String(Math.min(index + 3, 9))}
+            >
+              <div class="service-item__lead">
+                <span class="service-item__number" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 class="service-item__title">{item.title}</h3>
+              </div>
+              <p class="service-item__description">{item.description}</p>
+              <Icon name="bi:arrow-up-right" class="service-item__icon" />
+              <a
+                class="service-item__link"
+                href={`#${anchors.contact}`}
+                data-scroll-link
+                data-contact-subject={item.title}
+              >
+                <span class="visually-hidden">{`${services.linkLabel}: ${item.title}`}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <span class="services__highlight" aria-hidden="true" data-services-highlight />
+      </div>
+    </div>
+  </PageSection>
+)}
+
+<script>
+  import '@/scripts/services-hover';
+</script>
+
+<style>
+  .services {
+    padding: var(--space-section) 0;
+  }
+
+  .services :global(.services__heading) {
+    margin-bottom: 50px;
+  }
+
+  .services__list {
+    position: relative;
+  }
+
+  .service-item {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    padding: 0 30px;
+    border-bottom: 1px solid var(--color-accent-deep);
+  }
+
+  .service-item__lead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    width: calc(40% - 10px);
+    padding: 30px 0;
+  }
+
+  .service-item__number {
+    margin-top: 3px;
+    font-size: 1.25rem;
+    font-weight: var(--fw-bold);
+    color: var(--color-accent);
+    transition: color 0.5s ease;
+  }
+
+  .service-item__title {
+    margin-bottom: 0;
+    font-size: var(--fs-h3);
+    transition: color 0.5s ease;
+  }
+
+  .service-item__description {
+    width: calc(60% - 10px);
+    margin-bottom: 0;
+    padding: 30px 15% 30px 0;
+    transition: color 0.5s ease;
+  }
+
+  .service-item :global(.service-item__icon) {
+    position: absolute;
+    top: 50%;
+    right: 55px;
+    font-size: 20px;
+    color: var(--color-accent);
+    transform: translateY(-50%) rotate(90deg);
+    transition: all 0.5s ease;
+  }
+
+  .service-item__link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .service-item__link:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .services__highlight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 0;
+    background-image: linear-gradient(
+      260deg,
+      var(--color-accent-deep) 0%,
+      var(--color-accent-emphasis) 100%
+    );
+    pointer-events: none;
+    transition: all 0.5s ease;
+  }
+
+  .service-item.is-current .service-item__number,
+  .service-item.is-current .service-item__title,
+  .service-item.is-current .service-item__description,
+  .service-item:hover .service-item__number,
+  .service-item:hover .service-item__title,
+  .service-item:hover .service-item__description,
+  .service-item:focus-within .service-item__number,
+  .service-item:focus-within .service-item__title,
+  .service-item:focus-within .service-item__description {
+    color: var(--color-on-emphasis);
+  }
+
+  .service-item.is-current :global(.service-item__icon),
+  .service-item:hover :global(.service-item__icon),
+  .service-item:focus-within :global(.service-item__icon) {
+    color: var(--color-on-emphasis);
+    transform: translateY(-50%) rotate(0deg);
+  }
+
+  :global(html:not(.has-js)) .service-item.is-current {
+    background-image: linear-gradient(
+      260deg,
+      var(--color-accent-deep) 0%,
+      var(--color-accent-emphasis) 100%
+    );
+  }
+
+  :global(:root[data-theme='light']) .service-item {
+    border-bottom-color: var(--color-border);
+  }
+
+  :global(:root[data-theme='light']) .service-item__title {
+    color: var(--color-accent);
+  }
+
+  :global(:root[data-theme='light']) .service-item__description {
+    color: var(--color-heading);
+  }
+
+  @media (max-width: 991.98px) {
+    .services :global(.services__heading) {
+      margin-bottom: 40px;
+    }
+
+    .service-item {
+      padding: 0 15px;
+    }
+
+    .service-item__lead {
+      gap: 10px;
+    }
+
+    .service-item__number {
+      margin-top: 0;
+    }
+
+    .service-item__title {
+      font-size: 1.5625rem;
+    }
+
+    .service-item__description {
+      padding: 20px 5% 20px 0;
+    }
+
+    .service-item :global(.service-item__icon) {
+      right: 20px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .service-item {
+      gap: 15px;
+      padding: 20px 15px;
+      transition: background 0.5s ease;
+    }
+
+    .service-item__lead {
+      width: 100%;
+      gap: 10px;
+      padding: 0 25px 0 0;
+    }
+
+    .service-item__number {
+      line-height: 1.3;
+    }
+
+    .service-item__title {
+      font-size: 1.25rem;
+    }
+
+    .service-item__description {
+      width: 100%;
+      padding: 0;
+    }
+
+    .service-item :global(.service-item__icon) {
+      top: 20%;
+      right: 20px;
+      font-size: 15px;
+    }
+
+    .services__highlight {
+      display: none;
+    }
+
+    .service-item.is-current,
+    .service-item:hover {
+      background: linear-gradient(
+        260deg,
+        var(--color-accent-deep) 0%,
+        var(--color-accent-emphasis) 100%
+      );
+    }
+  }
+</style>

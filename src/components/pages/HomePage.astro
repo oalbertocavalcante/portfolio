@@ -5,6 +5,7 @@ import SiteHeader from '@/components/layout/SiteHeader.astro';
 import HeroSection from '@/components/sections/HeroSection.astro';
 import HighlightsSection from '@/components/sections/HighlightsSection.astro';
 import RoleTicker from '@/components/sections/RoleTicker.astro';
+import ServicesSection from '@/components/sections/ServicesSection.astro';
 import { getContent } from '@/data';
 import type { Locale } from '@/i18n/locales';
 import { homePaths } from '@/i18n/pages';
@@ -25,6 +26,7 @@ const content = getContent(locale);
     <HeroSection locale={locale} content={content} />
     <RoleTicker roles={content.roles} />
     <HighlightsSection content={content} />
+    <ServicesSection content={content} />
   </main>
   <ScrollTopButton label={content.ui.backToTop} />
 </BaseLayout>

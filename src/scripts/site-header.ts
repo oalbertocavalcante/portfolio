@@ -1,8 +1,7 @@
 import { prefersReducedMotion } from './motion';
-import { scrollToPosition, setScrollLocked } from './smooth-scroll';
+import { setScrollLocked } from './smooth-scroll';
 
 const STICKY_OFFSET = 500;
-const NAVIGATION_OFFSET = -90;
 const desktopQuery = window.matchMedia('(min-width: 992px)');
 
 const header = document.querySelector<HTMLElement>('[data-site-header]');
@@ -108,18 +107,7 @@ if (header) {
     if (event.matches) setMenu(false, false);
   });
 
-  navLinks.forEach((link) => {
-    link.addEventListener('click', (event) => {
-      const id = decodeURIComponent(link.hash.slice(1));
-      const target = id ? document.getElementById(id) : null;
-      if (!target) return;
-      event.preventDefault();
-      setMenu(false, false);
-      scrollToPosition(target, NAVIGATION_OFFSET);
-      window.history.replaceState(null, '', `#${id}`);
-      target.focus({ preventScroll: true });
-    });
-  });
+  window.addEventListener('anchor:navigate', () => setMenu(false, false));
 
   observeSections();
   updateSticky();

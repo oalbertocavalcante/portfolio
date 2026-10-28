@@ -41,7 +41,12 @@ const panelId = 'menu-mobile';
       <ul class="site-header__menu list-reset">
         {navigation.map((item) => (
           <li>
-            <a href={`#${anchors[item.section]}`} data-nav-link data-target-section={item.section}>
+            <a
+              href={`#${anchors[item.section]}`}
+              data-nav-link
+              data-scroll-link
+              data-target-section={item.section}
+            >
               {item.label}
             </a>
           </li>
@@ -57,7 +62,7 @@ const panelId = 'menu-mobile';
     <ButtonLink
       class="site-header__cta"
       href={`#${anchors[header.ctaSection]}`}
-      data-nav-link
+      data-scroll-link
       data-target-section={header.ctaSection}
     >
       {header.ctaLabel}
@@ -85,7 +90,12 @@ const panelId = 'menu-mobile';
       <ul class="site-header__panel-menu list-reset">
         {navigation.map((item) => (
           <li>
-            <a href={`#${anchors[item.section]}`} data-nav-link data-target-section={item.section}>
+            <a
+              href={`#${anchors[item.section]}`}
+              data-nav-link
+              data-scroll-link
+              data-target-section={item.section}
+            >
               {item.label}
             </a>
           </li>

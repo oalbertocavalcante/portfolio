@@ -201,6 +201,25 @@ img {
   color: var(--color-on-accent);
 }
 
+.container-wide {
+  width: 100%;
+  max-width: 1326px;
+  margin-inline: auto;
+  padding-inline: 15px;
+}
+
+@media (max-width: 1199.98px) {
+  .container-wide {
+    max-width: 1054px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .container-wide {
+    max-width: 797px;
+  }
+}
+
 .visually-hidden {
   position: absolute !important;
   width: 1px !important;

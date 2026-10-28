@@ -69,6 +69,21 @@ export interface HighlightsContent {
   items: HighlightItem[];
 }
 
+export interface SectionIntro {
+  title: string;
+  description?: string;
+}
+
+export interface ServiceItem {
+  title: string;
+  description: string;
+}
+
+export interface ServicesContent extends SectionIntro {
+  linkLabel: string;
+  items: ServiceItem[];
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -79,4 +94,5 @@ export interface SiteContent {
   stats: StatItem[];
   roles: string[];
   highlights: HighlightsContent;
+  services: ServicesContent;
 }

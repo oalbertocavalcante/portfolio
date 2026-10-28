@@ -89,4 +89,29 @@ export const en = {
       },
     ],
   },
+  services: {
+    title: 'My services',
+    description:
+      'I turn ideas into well-structured, secure software projects that are ready to grow.',
+    linkLabel: 'Talk about',
+    items: [
+      {
+        title: 'Web development',
+        description: 'Modern, responsive and accessible web applications, from planning to launch.',
+      },
+      {
+        title: 'APIs and back-end',
+        description:
+          'Robust services and integrations focused on performance, structure and tests.',
+      },
+      {
+        title: 'Application security',
+        description: 'Vulnerability analysis and best practices applied to keep your systems safe.',
+      },
+      {
+        title: 'Process automation',
+        description: 'Scripts and tools that remove repetitive work and reduce manual errors.',
+      },
+    ],
+  },
 } satisfies SiteContent;

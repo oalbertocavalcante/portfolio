@@ -90,4 +90,32 @@ export const pt = {
       },
     ],
   },
+  services: {
+    title: 'Meus serviços',
+    description:
+      'Transformo ideias em projetos de software bem estruturados, seguros e prontos para crescer.',
+    linkLabel: 'Conversar sobre',
+    items: [
+      {
+        title: 'Desenvolvimento web',
+        description:
+          'Aplicações web modernas, responsivas e acessíveis, do planejamento à publicação.',
+      },
+      {
+        title: 'APIs e back-end',
+        description:
+          'Serviços e integrações robustos, com foco em desempenho, organização e testes.',
+      },
+      {
+        title: 'Segurança de aplicações',
+        description:
+          'Análise de vulnerabilidades e aplicação de boas práticas para proteger seus sistemas.',
+      },
+      {
+        title: 'Automação de processos',
+        description:
+          'Scripts e ferramentas que eliminam tarefas repetitivas e reduzem erros manuais.',
+      },
+    ],
+  },
 } satisfies SiteContent;
