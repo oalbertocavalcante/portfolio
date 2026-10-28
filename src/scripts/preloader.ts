@@ -1,12 +1,15 @@
-import { gsap } from 'gsap';
 import { prefersReducedMotion } from './motion';
 
-const CURVED_PATH = 'M0 502S175 272 500 272s500 230 500 230V0H0Z';
-const FLAT_PATH = 'M0 2S175 1 500 1s500 1 500 1V0H0Z';
+const INTRO_DELAY = 1500;
+const STEP_DURATION = 500;
+const EXIT_DURATION = 600;
 const FALLBACK_DELAY = 4000;
 
 const preloader = document.querySelector<HTMLElement>('[data-preloader]');
 let started = false;
+
+const wait = (milliseconds: number): Promise<void> =>
+  new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 
 function finish(): void {
   preloader?.remove();
@@ -14,19 +17,26 @@ function finish(): void {
   window.dispatchEvent(new CustomEvent('preloader:done'));
 }
 
+async function play(element: HTMLElement): Promise<void> {
+  const curve = element.querySelector<SVGAnimationElement>('[data-preloader-curve]');
+  const flat = element.querySelector<SVGAnimationElement>('[data-preloader-flat]');
+
+  await wait(INTRO_DELAY);
+  element.classList.add('is-leaving');
+  await wait(STEP_DURATION);
+  curve?.beginElement();
+  await wait(STEP_DURATION);
+  flat?.beginElement();
+  await wait(STEP_DURATION);
+  element.classList.add('is-done');
+  await wait(EXIT_DURATION);
+  finish();
+}
+
 function start(): void {
   if (started || !preloader) return;
   started = true;
-
-  const path = preloader.querySelector('[data-preloader-path]');
-  const text = preloader.querySelector('[data-preloader-text]');
-
-  gsap
-    .timeline({ onComplete: finish })
-    .to(text, { delay: 1.5, y: -100, opacity: 0 })
-    .to(path, { duration: 0.5, attr: { d: CURVED_PATH }, ease: 'power2.in' })
-    .to(path, { duration: 0.5, attr: { d: FLAT_PATH }, ease: 'power2.out' })
-    .to(preloader, { yPercent: -100, duration: 0.6, ease: 'power2.inOut' });
+  void play(preloader);
 }
 
 if (!preloader || prefersReducedMotion()) {

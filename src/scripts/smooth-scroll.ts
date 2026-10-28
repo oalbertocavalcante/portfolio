@@ -1,20 +1,18 @@
 import 'lenis/dist/lenis.css';
 import Lenis from 'lenis';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { prefersReducedMotion } from './motion';
+import { onPageReady } from './page-ready';
 
 const ANCHOR_OFFSET = -90;
+const root = document.documentElement;
 
-gsap.registerPlugin(ScrollTrigger);
+let lenis: Lenis | null = null;
 
-const lenis = prefersReducedMotion() ? null : new Lenis();
-
-if (lenis) {
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
-}
+onPageReady(() => {
+  if (prefersReducedMotion()) return;
+  lenis = new Lenis({ autoRaf: true });
+  if (root.classList.contains('is-scroll-locked')) lenis.stop();
+});
 
 export function scrollToPosition(target: HTMLElement | number, offset = 0): void {
   if (lenis) {
@@ -33,7 +31,7 @@ export function setScrollLocked(locked: boolean): void {
     if (locked) lenis.stop();
     else lenis.start();
   }
-  document.documentElement.classList.toggle('is-scroll-locked', locked);
+  root.classList.toggle('is-scroll-locked', locked);
 }
 
 document.addEventListener('click', (event) => {
