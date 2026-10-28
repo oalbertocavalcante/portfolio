@@ -16,7 +16,8 @@
     "test:unit": "node --test \"tests/unit/**/*.test.ts\"",
     "test:e2e": "playwright test",
     "test": "npm run test:unit && npm run test:e2e",
-    "moderation:hash": "node scripts/hash-moderation-terms.ts"
+    "moderation:hash": "node scripts/hash-moderation-terms.ts",
+    "record:preview": "npm run build && node scripts/record-preview.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",
@@ -36,6 +37,9 @@
     "@iconify/types": "2.0.0",
     "@playwright/test": "1.64.1",
     "@types/node": "24.19.2",
+    "@types/pngjs": "6.0.5",
+    "gifenc": "1.0.3",
+    "pngjs": "7.0.0",
     "prettier": "3.9.10",
     "prettier-plugin-astro": "1.1.2",
     "typescript": "6.0.3"
