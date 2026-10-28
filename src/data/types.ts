@@ -233,6 +233,12 @@ export interface FooterContent {
   rights: string;
 }
 
+export interface NotFoundContent {
+  title: string;
+  description: string;
+  action: string;
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -252,4 +258,5 @@ export interface SiteContent {
   callToAction: CallToActionContent;
   contact: ContactContent;
   footer: FooterContent;
+  notFound: NotFoundContent;
 }

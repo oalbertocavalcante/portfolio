@@ -7,18 +7,20 @@ import { alternateLinks, assetPath, localeUrl } from '@/i18n/routes';
 
 interface Props {
   locale: Locale;
-  paths: Record<Locale, string>;
-  title?: string;
-  description?: string;
+  paths?: Record<Locale, string> | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
+  noindex?: boolean | undefined;
 }
 
-const { locale, paths, title, description } = Astro.props;
+const { locale, paths, title, description, noindex = false } = Astro.props;
 const content = getContent(locale);
 const settings = localeSettings[locale];
 const pageTitle = title ?? content.meta.title;
 const pageDescription = description ?? content.meta.description;
-const canonical = localeUrl(locale, paths[locale]);
-const alternates = alternateLinks(paths);
+const canonical = paths ? localeUrl(locale, paths[locale]) : undefined;
+const alternates = paths ? alternateLinks(paths) : [];
+const indexable = siteConfig.indexable && !noindex;
 const defaultAlternate = alternates.find((link) => link.locale === defaultLocale);
 const ogAlternates = locales.filter((code) => code !== locale);
 
@@ -40,11 +42,11 @@ const structuredData = JSON.stringify(person).replace(/</g, '\\u003c');
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <meta name="author" content={siteConfig.owner.name} />
-    <meta name="robots" content={siteConfig.indexable ? 'index, follow' : 'noindex, nofollow'} />
+    <meta name="robots" content={indexable ? 'index, follow' : 'noindex, nofollow'} />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content={siteConfig.themeColor} />
-    <link rel="canonical" href={canonical} />
+    {canonical && <link rel="canonical" href={canonical} />}
     {alternates.map((link) => (
       <link rel="alternate" hreflang={link.hreflang} href={link.href} />
     ))}
@@ -55,7 +57,7 @@ const structuredData = JSON.stringify(person).replace(/</g, '\\u003c');
     <meta property="og:site_name" content={siteConfig.owner.name} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:url" content={canonical} />
+    {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:locale" content={settings.ogLocale} />
     {ogAlternates.map((code) => (
       <meta property="og:locale:alternate" content={localeSettings[code].ogLocale} />

@@ -316,4 +316,10 @@ export const pt = {
     navigationLabel: 'Navegação do rodapé',
     rights: 'Todos os direitos reservados.',
   },
+  notFound: {
+    title: 'Página não encontrada',
+    description:
+      'O endereço que você acessou não existe ou foi movido. Volte para a página inicial para continuar navegando.',
+    action: 'Voltar ao início',
+  },
 } satisfies SiteContent;

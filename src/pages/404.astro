@@ -1,0 +1,187 @@
+---
+import Preloader from '@/components/layout/Preloader.astro';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
+import ButtonLink from '@/components/ui/ButtonLink.astro';
+import { getContent } from '@/data';
+import { getNavigation } from '@/data/sections';
+import { defaultLocale, locales, localeSettings } from '@/i18n/locales';
+import { homePaths } from '@/i18n/pages';
+import { localePath } from '@/i18n/routes';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const content = getContent(defaultLocale);
+const navigation = getNavigation(content);
+const variants = locales.map((locale) => ({
+  locale,
+  lang: localeSettings[locale].htmlLang,
+  text: getContent(locale).notFound,
+  href: localePath(locale),
+}));
+const primary = variants.find((variant) => variant.locale === defaultLocale) ?? variants[0];
+const secondary = variants.filter((variant) => variant !== primary);
+---
+
+<BaseLayout
+  locale={defaultLocale}
+  title={`404 | ${primary?.text.title ?? ''}`}
+  description={primary?.text.description}
+  noindex
+>
+  <Preloader label={content.ui.loading} />
+  <SiteHeader locale={defaultLocale} paths={homePaths} content={content} navigation={navigation} />
+  <main id="main" class="not-found">
+    <div class="container not-found__content">
+      <p class="not-found__code" aria-hidden="true">
+        404
+      </p>
+      <svg class="not-found__plug" viewBox="0 0 640 80" aria-hidden="true" focusable="false">
+        <path d="M0 40h250" />
+        <path d="M250 22h34a10 10 0 0 1 10 10v16a10 10 0 0 1-10 10h-34z" />
+        <path d="M294 31h26M294 49h26" />
+        <path d="M366 36l8-8M372 46h12M366 56l8 8" />
+        <path d="M430 22h-34a10 10 0 0 0-10 10v16a10 10 0 0 0 10 10h34z" />
+        <path d="M430 40h210" />
+      </svg>
+      {primary && (
+        <>
+          <h1 class="not-found__title">{primary.text.title}</h1>
+          <p class="not-found__description">{primary.text.description}</p>
+        </>
+      )}
+      <div class="not-found__actions">
+        {primary && (
+          <ButtonLink href={primary.href} hreflang={primary.lang}>
+            {primary.text.action}
+          </ButtonLink>
+        )}
+        {secondary.map((variant) => (
+          <ButtonLink
+            href={variant.href}
+            variant="outline"
+            lang={variant.lang}
+            hreflang={variant.lang}
+          >
+            {variant.text.action}
+          </ButtonLink>
+        ))}
+      </div>
+      {secondary.map((variant) => (
+        <p class="not-found__translation" lang={variant.lang}>
+          {`${variant.text.title}. ${variant.text.description}`}
+        </p>
+      ))}
+    </div>
+  </main>
+  <SiteFooter locale={defaultLocale} content={content} navigation={navigation} />
+</BaseLayout>
+
+<style>
+  .not-found {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    padding: 240px 0 120px;
+    background-color: var(--color-band-alt);
+  }
+
+  .not-found::before,
+  .not-found::after {
+    content: '';
+    position: absolute;
+    top: -85px;
+    left: -75px;
+    z-index: -1;
+    width: 500px;
+    height: 480px;
+    background-color: var(--color-accent);
+    filter: blur(250px);
+    opacity: 0.5;
+  }
+
+  .not-found::after {
+    top: auto;
+    right: -75px;
+    bottom: -85px;
+    left: auto;
+  }
+
+  .not-found__content {
+    text-align: center;
+  }
+
+  .not-found__code {
+    margin-bottom: 20px;
+    font-size: 7.8125rem;
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    color: var(--color-heading);
+  }
+
+  .not-found__plug {
+    width: 85%;
+    max-width: 640px;
+    height: 80px;
+    margin: 0 auto 50px;
+  }
+
+  .not-found__plug path {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .not-found__title {
+    margin-bottom: 20px;
+    font-size: var(--fs-h3);
+  }
+
+  .not-found__description {
+    max-width: 550px;
+    margin: 0 auto;
+  }
+
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 35px;
+  }
+
+  .not-found__translation {
+    max-width: 550px;
+    margin: 30px auto 0;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 991.98px) {
+    .not-found {
+      padding: 180px 0 100px;
+    }
+
+    .not-found::before,
+    .not-found::after {
+      width: 300px;
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .not-found {
+      padding: 150px 0 80px;
+    }
+
+    .not-found__code {
+      font-size: 5rem;
+    }
+
+    .not-found__plug {
+      height: 50px;
+      margin-bottom: 35px;
+    }
+  }
+</style>

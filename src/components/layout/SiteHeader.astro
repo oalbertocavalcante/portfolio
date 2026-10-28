@@ -19,13 +19,14 @@ const { locale, paths, content, navigation } = Astro.props;
 const { ui, anchors, header } = content;
 const email = siteConfig.contact.email;
 const panelId = 'menu-mobile';
+const homeHref = localePath(locale);
 ---
 
 <header class="site-header" data-site-header>
   <div class="container site-header__inner">
     <a
       class="site-header__brand"
-      href={localePath(locale)}
+      href={homeHref}
       aria-label={`${siteConfig.owner.name} - ${ui.homeLink}`}
     >
       <BrandMark />
@@ -42,7 +43,7 @@ const panelId = 'menu-mobile';
         {navigation.map((item) => (
           <li>
             <a
-              href={`#${anchors[item.section]}`}
+              href={`${homeHref}#${anchors[item.section]}`}
               data-nav-link
               data-scroll-link
               data-target-section={item.section}
@@ -61,7 +62,7 @@ const panelId = 'menu-mobile';
 
     <ButtonLink
       class="site-header__cta"
-      href={`#${anchors[header.ctaSection]}`}
+      href={`${homeHref}#${anchors[header.ctaSection]}`}
       data-scroll-link
       data-target-section={header.ctaSection}
     >
@@ -91,7 +92,7 @@ const panelId = 'menu-mobile';
         {navigation.map((item) => (
           <li>
             <a
-              href={`#${anchors[item.section]}`}
+              href={`${homeHref}#${anchors[item.section]}`}
               data-nav-link
               data-scroll-link
               data-target-section={item.section}

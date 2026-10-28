@@ -14,13 +14,14 @@ interface Props {
 const { locale, content, navigation } = Astro.props;
 const { footer, anchors, ui } = content;
 const year = new Date().getFullYear();
+const homeHref = localePath(locale);
 ---
 
 <footer class="site-footer">
   <div class="container site-footer__inner">
     <a
       class="site-footer__brand"
-      href={localePath(locale)}
+      href={homeHref}
       aria-label={`${siteConfig.owner.name} - ${ui.homeLink}`}
     >
       <BrandMark class="site-footer__mark" />
@@ -31,7 +32,7 @@ const year = new Date().getFullYear();
         <ul class="site-footer__menu list-reset">
           {navigation.map((item) => (
             <li>
-              <a href={`#${anchors[item.section]}`} data-scroll-link>
+              <a href={`${homeHref}#${anchors[item.section]}`} data-scroll-link>
                 {`${item.label}.`}
               </a>
             </li>
