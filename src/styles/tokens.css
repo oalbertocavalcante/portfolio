@@ -34,6 +34,8 @@
 
   --color-canvas: #010409;
   --color-canvas-alt: #0d1117;
+  --color-band: #0d1117;
+  --color-band-alt: #010409;
   --color-surface: #161b22;
   --color-surface-raised: #1c2128;
   --color-border: #30363d;
@@ -73,6 +75,8 @@
 
   --color-canvas: #ffffff;
   --color-canvas-alt: #f6f8fa;
+  --color-band: #ffffff;
+  --color-band-alt: #f6f8fa;
   --color-surface: #ffffff;
   --color-surface-raised: #eaeef2;
   --color-border: #d0d7de;

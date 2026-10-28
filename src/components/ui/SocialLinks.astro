@@ -1,0 +1,75 @@
+---
+import { siteConfig, type SocialNetwork } from '@/config/site';
+import Icon, { type IconName } from './Icon.astro';
+
+interface Props {
+  label: string;
+  class?: string;
+}
+
+const { label, class: className } = Astro.props;
+
+const networks: Record<SocialNetwork, { name: string; icon: IconName }> = {
+  linkedin: { name: 'LinkedIn', icon: 'bi:linkedin' },
+  github: { name: 'GitHub', icon: 'bi:github' },
+};
+
+const links = (Object.keys(networks) as SocialNetwork[])
+  .filter((network) => siteConfig.social[network])
+  .map((network) => ({ ...networks[network], url: siteConfig.social[network] }));
+---
+
+{links.length > 0 && (
+  <ul class:list={['social-links list-reset', className]} aria-label={label}>
+    {links.map((link) => (
+      <li>
+        <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
+          <Icon name={link.icon} />
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .social-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .social-links a {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    color: var(--color-accent);
+    font-size: 15px;
+    transition: color var(--duration-fast);
+  }
+
+  .social-links a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 50%;
+    background: var(--color-accent);
+    transform: scale(0);
+    transition: transform var(--duration-fast);
+  }
+
+  .social-links a:hover,
+  .social-links a:focus-visible {
+    color: var(--color-on-accent);
+  }
+
+  .social-links a:hover::before,
+  .social-links a:focus-visible::before {
+    transform: scale(1.1);
+  }
+</style>

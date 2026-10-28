@@ -1,0 +1,414 @@
+---
+import { Image } from 'astro:assets';
+import PageSection from '@/components/layout/PageSection.astro';
+import ButtonLink from '@/components/ui/ButtonLink.astro';
+import SocialLinks from '@/components/ui/SocialLinks.astro';
+import StatCounter from '@/components/ui/StatCounter.astro';
+import { siteConfig } from '@/config/site';
+import { media } from '@/data/media';
+import type { SiteContent } from '@/data/types';
+import type { Locale } from '@/i18n/locales';
+import { assetPath } from '@/i18n/routes';
+
+interface Props {
+  locale: Locale;
+  content: SiteContent;
+}
+
+const { locale, content } = Astro.props;
+const { hero, stats, anchors } = content;
+const resumeFile = siteConfig.resume[locale];
+const titleLines = hero.title.split('\n');
+---
+
+<PageSection section="intro" anchor={anchors.intro} labelledBy="hero-title" class="hero">
+  <svg class="hero__outline" viewBox="0 0 1320 300" aria-hidden="true" focusable="false">
+    <text x="50%" y="50%" text-anchor="middle" data-hero-outline>
+      {hero.outline}
+    </text>
+  </svg>
+
+  <div class="container">
+    <div class="hero__grid">
+      <p class="hero__eyebrow">{hero.eyebrow}</p>
+      <h1 class="hero__title" id="hero-title">
+        {titleLines.map((line, index) => (
+          <>
+            {index > 0 && <br />}
+            {line}
+          </>
+        ))}
+      </h1>
+      <div class="hero__media">
+        <Image
+          src={media.profile}
+          alt={hero.imageAlt}
+          widths={[438, 876]}
+          sizes="(min-width: 768px) 438px, 80vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <p class="hero__lead">{hero.description}</p>
+      <div class="hero__actions">
+        {resumeFile && (
+          <ButtonLink
+            href={assetPath(resumeFile)}
+            variant="outline"
+            icon="bi:download"
+            class="hero__resume"
+            download
+          >
+            {hero.resumeLabel}
+          </ButtonLink>
+        )}
+        <SocialLinks label={hero.socialLabel} />
+      </div>
+    </div>
+
+    <ul class="hero__stats list-reset">
+      {stats.map((stat) => (
+        <li class="hero__stat">
+          <StatCounter stat={stat} />
+        </li>
+      ))}
+    </ul>
+  </div>
+</PageSection>
+
+<script>
+  import '@/scripts/hero-intro';
+  import '@/scripts/stat-counters';
+</script>
+
+<style>
+  .hero {
+    z-index: 1;
+    overflow: hidden;
+    padding: 200px 0 50px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    width: 322px;
+    height: 308px;
+    margin-top: -5%;
+    margin-right: -5%;
+    border-radius: 50%;
+    background: linear-gradient(260deg, var(--color-accent) 0%, transparent 100%);
+    filter: blur(150px);
+  }
+
+  .hero__outline {
+    position: absolute;
+    top: 55%;
+    left: 46%;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-display);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    animation: hero-pulsate 3s infinite alternate ease-in-out;
+  }
+
+  .hero__outline text {
+    font-size: 240px;
+    text-transform: uppercase;
+    fill: transparent;
+    stroke: var(--color-accent-deep);
+    stroke-width: 1.2;
+    opacity: 0;
+  }
+
+  .hero__outline text.is-drawn {
+    opacity: 0.7;
+    animation: hero-stroke 4s;
+  }
+
+  :global(:root[data-theme='light']) .hero__outline text {
+    stroke: var(--color-accent);
+  }
+
+  :global(:root[data-theme='light']) .hero__outline text.is-drawn {
+    opacity: 0.2;
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 1fr repeat(4, auto) 1fr;
+    grid-template-areas:
+      '. media'
+      'eyebrow media'
+      'title media'
+      'lead media'
+      'actions media'
+      '. media';
+    column-gap: 24px;
+  }
+
+  .hero__eyebrow {
+    grid-area: eyebrow;
+    margin-bottom: 10px;
+    font-size: 2.25rem;
+    font-weight: var(--fw-bold);
+    line-height: 1.5;
+    color: var(--color-heading);
+  }
+
+  .hero__title {
+    grid-area: title;
+    font-size: 4.0625rem;
+    background-image: var(--gradient-title);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero__lead {
+    grid-area: lead;
+    max-width: 550px;
+    margin-bottom: 0;
+    font-size: var(--fs-lead);
+    font-weight: var(--fw-light);
+  }
+
+  .hero__actions {
+    grid-area: actions;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 25px;
+    margin-top: 50px;
+  }
+
+  .hero__actions :global(.hero__resume) {
+    gap: 6px;
+  }
+
+  .hero__actions :global(.hero__resume .button__icon) {
+    font-size: 17px;
+  }
+
+  .hero__actions:empty {
+    display: none;
+  }
+
+  .hero__media {
+    grid-area: media;
+    position: relative;
+    align-self: center;
+    width: 100%;
+    max-width: 438px;
+    margin-inline: auto;
+  }
+
+  .hero__media::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 220px;
+    height: 220px;
+    margin-bottom: -5%;
+    margin-left: -5%;
+    border-radius: 50%;
+    background: linear-gradient(260deg, var(--color-accent) 0%, transparent 100%);
+    filter: blur(150px);
+  }
+
+  .hero__media :global(img) {
+    position: relative;
+    width: 100%;
+    border: 2px solid var(--color-accent-deep);
+    border-radius: 38px;
+    transform: rotate(4.29deg);
+    transition:
+      transform var(--duration-fast),
+      border-color var(--duration-fast);
+  }
+
+  .hero__media :global(img:hover) {
+    border-color: var(--color-accent);
+    transform: rotate(0);
+  }
+
+  :global(:root[data-theme='light']) .hero__media :global(img) {
+    border-color: var(--color-canvas-alt);
+  }
+
+  :global(:root[data-theme='light']) .hero__media :global(img:hover) {
+    border-color: var(--color-accent);
+  }
+
+  .hero__stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    margin-top: 120px;
+    padding-inline: 3px;
+  }
+
+  .hero__stat {
+    width: 23%;
+  }
+
+  @keyframes hero-pulsate {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+  }
+
+  @keyframes hero-stroke {
+    0% {
+      stroke-dashoffset: 25%;
+      stroke-dasharray: 0 50%;
+      stroke-width: 1;
+    }
+
+    100% {
+      stroke-dashoffset: 100%;
+      stroke-dasharray: 100% 0;
+      stroke-width: 1;
+    }
+  }
+
+  @media (min-width: 1400px) and (max-width: 1599.98px) {
+    .hero__outline text {
+      font-size: 260px;
+    }
+  }
+
+  @media (max-width: 1399.98px) {
+    .hero {
+      padding-top: 160px;
+    }
+
+    .hero__title {
+      font-size: 3.75rem;
+    }
+
+    .hero__stats {
+      gap: 25px;
+      margin-top: 50px;
+    }
+  }
+
+  @media (max-width: 1199.98px) {
+    .hero {
+      padding: 130px 0 30px;
+    }
+
+    .hero__eyebrow {
+      margin-bottom: 0;
+    }
+
+    .hero__title {
+      font-size: 3.125rem;
+    }
+
+    .hero__stats {
+      margin-top: 45px;
+    }
+
+    .hero__stat {
+      width: 48%;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .hero__outline {
+      top: 40%;
+    }
+
+    .hero__outline text {
+      font-size: 280px;
+      opacity: 0.6;
+    }
+
+    .hero__eyebrow {
+      font-size: 1.5625rem;
+    }
+
+    .hero__title {
+      font-size: 1.875rem;
+    }
+
+    .hero__actions {
+      gap: 30px;
+      margin-top: 30px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .hero {
+      padding: 130px 0 80px;
+    }
+
+    .hero__outline {
+      top: 25%;
+      left: 50%;
+    }
+
+    .hero__outline text {
+      font-size: 450px;
+      opacity: 0.8;
+    }
+
+    .hero__grid {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      grid-template-areas:
+        'eyebrow'
+        'title'
+        'media'
+        'lead'
+        'actions';
+    }
+
+    .hero__eyebrow {
+      font-size: 1.375rem;
+    }
+
+    .hero__title {
+      margin-bottom: 0;
+    }
+
+    .hero__media {
+      margin: 30px auto;
+      text-align: center;
+    }
+
+    .hero__media :global(img) {
+      max-width: 80%;
+      margin-inline: auto;
+    }
+
+    .hero__actions {
+      margin-top: 20px;
+    }
+
+    .hero__stats {
+      gap: 30px 10px;
+      margin-top: 40px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__outline {
+      animation: none;
+    }
+  }
+</style>

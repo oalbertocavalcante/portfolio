@@ -1,0 +1,39 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { SectionKey } from '@/data/types';
+
+interface Props extends Omit<HTMLAttributes<'section'>, 'id' | 'class'> {
+  section: SectionKey;
+  anchor: string;
+  tone?: 'band' | 'band-alt';
+  labelledBy?: string;
+  class?: string;
+}
+
+const { section, anchor, tone = 'band', labelledBy, class: className, ...attributes } = Astro.props;
+---
+
+<section
+  id={anchor}
+  class:list={['page-section', `page-section--${tone}`, className]}
+  data-section={section}
+  tabindex="-1"
+  aria-labelledby={labelledBy}
+  {...attributes}
+>
+  <slot />
+</section>
+
+<style>
+  .page-section {
+    position: relative;
+  }
+
+  .page-section--band {
+    background-color: var(--color-band);
+  }
+
+  .page-section--band-alt {
+    background-color: var(--color-band-alt);
+  }
+</style>

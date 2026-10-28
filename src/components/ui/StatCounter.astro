@@ -1,0 +1,171 @@
+---
+import type { StatItem } from '@/data/types';
+
+interface Props {
+  stat: StatItem;
+}
+
+const { stat } = Astro.props;
+const characters = [...stat.value];
+const digits = Array.from({ length: 10 }, (_, index) => index);
+const labelLines = stat.label.split('\n');
+const spoken = `${stat.prefix ?? ''}${stat.value}${stat.suffix ?? ''}`;
+---
+
+<div class="stat" data-stat-counter>
+  <p class="stat__number" aria-hidden="true">
+    {stat.prefix && <span>{stat.prefix}</span>}
+    <span class="stat__value">
+      {characters.map((character) =>
+        /\d/.test(character) ? (
+          <span class="stat__digit" data-digit={character}>
+            <span class="stat__reel">
+              {digits.map((digit) => (
+                <span>{digit}</span>
+              ))}
+            </span>
+          </span>
+        ) : (
+          <span class="stat__symbol">{character}</span>
+        ),
+      )}
+    </span>
+    {stat.suffix && <span>{stat.suffix}</span>}
+  </p>
+  <p class="stat__label">
+    <span class="visually-hidden">{spoken}</span>
+    {labelLines.map((line, index) => (
+      <>
+        {index > 0 && <br />}
+        {line}
+      </>
+    ))}
+  </p>
+</div>
+
+<style>
+  .stat {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .stat__number {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+    font-size: 4rem;
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    color: var(--color-heading);
+  }
+
+  .stat__value {
+    display: inline-flex;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.1;
+  }
+
+  .stat__digit {
+    display: inline-block;
+    height: 1.1em;
+    overflow: hidden;
+  }
+
+  .stat__reel {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    transition: transform 2s var(--ease-standard);
+  }
+
+  .stat__reel span {
+    height: 1.1em;
+  }
+
+  .stat__digit[data-digit='1'] .stat__reel {
+    transform: translateY(-1.1em);
+  }
+
+  .stat__digit[data-digit='2'] .stat__reel {
+    transform: translateY(-2.2em);
+  }
+
+  .stat__digit[data-digit='3'] .stat__reel {
+    transform: translateY(-3.3em);
+  }
+
+  .stat__digit[data-digit='4'] .stat__reel {
+    transform: translateY(-4.4em);
+  }
+
+  .stat__digit[data-digit='5'] .stat__reel {
+    transform: translateY(-5.5em);
+  }
+
+  .stat__digit[data-digit='6'] .stat__reel {
+    transform: translateY(-6.6em);
+  }
+
+  .stat__digit[data-digit='7'] .stat__reel {
+    transform: translateY(-7.7em);
+  }
+
+  .stat__digit[data-digit='8'] .stat__reel {
+    transform: translateY(-8.8em);
+  }
+
+  .stat__digit[data-digit='9'] .stat__reel {
+    transform: translateY(-9.9em);
+  }
+
+  :global(html.has-js) .stat:not(.is-counted) .stat__reel {
+    transform: translateY(0);
+  }
+
+  .stat__label {
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  :global(:root[data-theme='light']) .stat__label {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 1199.98px) {
+    .stat__number {
+      font-size: 3.4375rem;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .stat {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .stat__number {
+      font-size: 2.8125rem;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .stat {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .stat__label {
+      margin-top: -15px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stat__reel {
+      transition: none;
+    }
+  }
+</style>

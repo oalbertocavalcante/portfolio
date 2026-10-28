@@ -42,4 +42,19 @@ export const en = {
     ctaLabel: "Let's talk",
     ctaSection: 'contact',
   },
+  hero: {
+    outline: 'Hi',
+    eyebrow: 'I am Alberto',
+    title: 'Software\nDeveloper',
+    description: 'I turn complex problems into clear, secure and well-crafted software solutions.',
+    resumeLabel: 'Download resume',
+    imageAlt: 'Photo of Alberto Cavalcante',
+    socialLabel: 'Social networks',
+  },
+  stats: [
+    { value: '3', label: 'Years of\nexperience' },
+    { value: '20', suffix: '+', label: 'Completed\nprojects' },
+    { value: '10', suffix: '+', label: 'Mastered\ntechnologies' },
+    { value: '5', label: 'Earned\ncertifications' },
+  ],
 } satisfies SiteContent;

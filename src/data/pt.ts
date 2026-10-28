@@ -42,4 +42,20 @@ export const pt = {
     ctaLabel: 'Fale comigo',
     ctaSection: 'contact',
   },
+  hero: {
+    outline: 'Olá',
+    eyebrow: 'Eu sou Alberto',
+    title: 'Desenvolvedor\nde Software',
+    description:
+      'Transformo problemas complexos em soluções de software claras, seguras e bem construídas.',
+    resumeLabel: 'Baixar currículo',
+    imageAlt: 'Foto de Alberto Cavalcante',
+    socialLabel: 'Redes sociais',
+  },
+  stats: [
+    { value: '3', label: 'Anos de\nexperiência' },
+    { value: '20', suffix: '+', label: 'Projetos\nconcluídos' },
+    { value: '10', suffix: '+', label: 'Tecnologias\ndominadas' },
+    { value: '5', label: 'Certificações\nobtidas' },
+  ],
 } satisfies SiteContent;

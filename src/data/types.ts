@@ -38,10 +38,29 @@ export interface HeaderContent {
   ctaSection: SectionKey;
 }
 
+export interface HeroContent {
+  outline: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  resumeLabel: string;
+  imageAlt: string;
+  socialLabel: string;
+}
+
+export interface StatItem {
+  value: string;
+  prefix?: string;
+  suffix?: string;
+  label: string;
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
   anchors: Record<SectionKey, string>;
   navigation: NavigationItem[];
   header: HeaderContent;
+  hero: HeroContent;
+  stats: StatItem[];
 }

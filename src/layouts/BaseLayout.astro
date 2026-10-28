@@ -69,5 +69,8 @@ const structuredData = JSON.stringify(person).replace(/</g, '\\u003c');
       {content.ui.skipToContent}
     </a>
     <slot />
+    <script>
+      import '@/scripts/reveal';
+    </script>
   </body>
 </html>
