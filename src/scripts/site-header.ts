@@ -51,7 +51,11 @@ function setMenu(open: boolean, restoreFocus = true): void {
   setScrollLocked(open);
 
   if (open) {
-    panel.querySelector<HTMLElement>('a')?.focus({ preventScroll: true });
+    window.requestAnimationFrame(() =>
+      window.requestAnimationFrame(() => {
+        if (isMenuOpen) panel.querySelector<HTMLElement>('a')?.focus({ preventScroll: true });
+      }),
+    );
   } else if (restoreFocus) {
     toggle.focus({ preventScroll: true });
   }
