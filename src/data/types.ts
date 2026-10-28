@@ -157,6 +157,14 @@ export interface FaqContent {
   items: FaqItem[];
 }
 
+export interface CallToActionContent {
+  eyebrow: string;
+  title: string;
+  contactLabel: string;
+  resumeLabel: string;
+  projectsLabel: string;
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -173,4 +181,5 @@ export interface SiteContent {
   skills: SkillsContent;
   testimonials: TestimonialsContent;
   faq: FaqContent;
+  callToAction: CallToActionContent;
 }

@@ -244,4 +244,11 @@ export const pt = {
       },
     ],
   },
+  callToAction: {
+    eyebrow: 'Vamos construir algo juntos',
+    title: 'Pronto para tirar a sua próxima ideia do papel?',
+    contactLabel: 'Fale comigo',
+    resumeLabel: 'Baixar currículo',
+    projectsLabel: 'Ver projetos',
+  },
 } satisfies SiteContent;

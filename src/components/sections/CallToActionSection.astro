@@ -1,0 +1,261 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { siteConfig } from '@/config/site';
+import type { SiteContent } from '@/data/types';
+import type { Locale } from '@/i18n/locales';
+import { assetPath } from '@/i18n/routes';
+
+interface Props {
+  locale: Locale;
+  content: SiteContent;
+}
+
+const { locale, content } = Astro.props;
+const { callToAction, anchors } = content;
+const resumeFile = siteConfig.resume[locale];
+const headingId = 'call-to-action-title';
+---
+
+<section class="call-to-action" aria-labelledby={headingId}>
+  <div class="container">
+    <div class="call-to-action__card">
+      <p class="call-to-action__eyebrow" data-reveal data-reveal-delay="3">
+        {callToAction.eyebrow}
+      </p>
+      <h2 class="call-to-action__title" id={headingId} data-reveal data-reveal-delay="4">
+        {callToAction.title}
+      </h2>
+      <div class="call-to-action__actions" data-reveal data-reveal-delay="5">
+        <a
+          class="call-to-action__button call-to-action__button--solid"
+          href={`#${anchors.contact}`}
+          data-scroll-link
+        >
+          {callToAction.contactLabel}
+          <span class="call-to-action__arrows" aria-hidden="true">
+            <Icon name="bi:arrow-right" />
+            <Icon name="bi:arrow-right" />
+          </span>
+        </a>
+        {resumeFile ? (
+          <a
+            class="call-to-action__button call-to-action__button--outline"
+            href={assetPath(resumeFile)}
+            download
+          >
+            {callToAction.resumeLabel}
+            <span class="call-to-action__arrows" aria-hidden="true">
+              <Icon name="bi:arrow-right" />
+              <Icon name="bi:arrow-right" />
+            </span>
+          </a>
+        ) : (
+          <a
+            class="call-to-action__button call-to-action__button--outline"
+            href={`#${anchors.projects}`}
+            data-scroll-link
+          >
+            {callToAction.projectsLabel}
+            <span class="call-to-action__arrows" aria-hidden="true">
+              <Icon name="bi:arrow-right" />
+              <Icon name="bi:arrow-right" />
+            </span>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .call-to-action {
+    padding: 0 0 var(--space-section);
+    background-color: var(--color-band);
+  }
+
+  .call-to-action__card {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    padding: 70px 25px;
+    border-radius: 25px;
+    text-align: center;
+    background-color: var(--palette-green-850);
+    background-image:
+      radial-gradient(
+        circle at 8% 88%,
+        color-mix(in srgb, var(--palette-green-400) 85%, transparent) 0,
+        transparent 32%
+      ),
+      radial-gradient(
+        circle at 92% 12%,
+        color-mix(in srgb, var(--palette-green-200) 75%, transparent) 0,
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 78% 92%,
+        color-mix(in srgb, var(--palette-green-500) 80%, transparent) 0,
+        transparent 34%
+      ),
+      radial-gradient(
+        circle at 18% 10%,
+        color-mix(in srgb, var(--palette-green-900) 95%, transparent) 0,
+        transparent 40%
+      ),
+      linear-gradient(
+        135deg,
+        var(--palette-green-900) 0%,
+        var(--palette-green-850) 45%,
+        var(--palette-green-950) 100%
+      );
+  }
+
+  .call-to-action__card::before {
+    content: '';
+    position: absolute;
+    inset: 22% 18%;
+    z-index: -1;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--palette-gray-950) 45%, transparent);
+    filter: blur(60px);
+  }
+
+  .call-to-action__eyebrow {
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--palette-white);
+  }
+
+  .call-to-action__title {
+    max-width: 910px;
+    margin: 0 auto 35px;
+    font-size: 3.875rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: -0.02em;
+    color: var(--palette-white);
+  }
+
+  .call-to-action__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .call-to-action__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 30px;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-button);
+    font-weight: var(--fw-semibold);
+    color: var(--palette-white);
+    transition:
+      background-color var(--duration-base),
+      color var(--duration-base),
+      border-color var(--duration-base);
+  }
+
+  .call-to-action__button--solid {
+    background-color: var(--palette-gray-900);
+  }
+
+  .call-to-action__button--solid:hover {
+    color: var(--palette-white);
+    background-color: var(--palette-gray-950);
+  }
+
+  .call-to-action__button--outline {
+    border: 1px solid var(--palette-white);
+  }
+
+  .call-to-action__button--outline:hover {
+    color: var(--palette-gray-900);
+    background-color: var(--palette-white);
+  }
+
+  .call-to-action__button:focus-visible {
+    outline-color: var(--palette-white);
+  }
+
+  .call-to-action__arrows {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    font-size: 16px;
+    rotate: -45deg;
+  }
+
+  .call-to-action__arrows :global(.icon) {
+    transition: transform var(--duration-fast) ease-in-out;
+  }
+
+  .call-to-action__arrows :global(.icon:last-child) {
+    position: absolute;
+    transform: translateX(-150%);
+  }
+
+  .call-to-action__button:hover .call-to-action__arrows :global(.icon:first-child) {
+    transform: translateX(150%);
+  }
+
+  .call-to-action__button:hover .call-to-action__arrows :global(.icon:last-child) {
+    transform: translateX(0);
+  }
+
+  @media (max-width: 1399.98px) {
+    .call-to-action__title {
+      font-size: 3.4375rem;
+    }
+  }
+
+  @media (max-width: 1199.98px) {
+    .call-to-action__title {
+      font-size: 3.125rem;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .call-to-action__card {
+      padding: 40px 15px;
+    }
+
+    .call-to-action__title {
+      margin-bottom: 25px;
+      font-size: 2.8125rem;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .call-to-action__card {
+      padding: 35px 15px;
+    }
+
+    .call-to-action__eyebrow {
+      margin-bottom: 15px;
+    }
+
+    .call-to-action__title {
+      font-size: 2.1875rem;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .call-to-action__eyebrow {
+      margin-bottom: 12px;
+      font-size: 0.75rem;
+    }
+
+    .call-to-action__title {
+      font-size: 1.4375rem;
+    }
+
+    .call-to-action__actions {
+      flex-direction: column;
+    }
+  }
+</style>

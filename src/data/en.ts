@@ -235,4 +235,11 @@ export const en = {
       },
     ],
   },
+  callToAction: {
+    eyebrow: "Let's build something together",
+    title: 'Ready to bring your next idea to life?',
+    contactLabel: "Let's talk",
+    resumeLabel: 'Download resume',
+    projectsLabel: 'View projects',
+  },
 } satisfies SiteContent;
