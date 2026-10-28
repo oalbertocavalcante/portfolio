@@ -12,6 +12,9 @@ interface SiteConfig {
   };
   contact: {
     email: string;
+    phone: string;
+    formEndpoint: string;
+    turnstileSiteKey: string;
   };
   social: Record<SocialNetwork, string>;
   resume: Record<Locale, string>;
@@ -27,6 +30,9 @@ export const siteConfig: SiteConfig = {
   },
   contact: {
     email: '',
+    phone: '',
+    formEndpoint: 'https://formspree.io/f/xgaakjrj',
+    turnstileSiteKey: '',
   },
   social: {
     linkedin: '',

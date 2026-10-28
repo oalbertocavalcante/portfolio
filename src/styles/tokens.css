@@ -26,6 +26,8 @@
   --palette-green-850: #0b3d20;
   --palette-green-900: #0e4429;
   --palette-green-950: #033a16;
+  --palette-red-400: #f85149;
+  --palette-red-600: #d1242f;
 }
 
 :root {
@@ -83,6 +85,8 @@
   --color-panel: var(--palette-green-900);
   --color-on-panel: var(--palette-white);
   --color-header-sticky: var(--palette-gray-950);
+  --color-field: var(--palette-gray-950);
+  --color-danger: var(--palette-red-400);
 
   --gradient-title: linear-gradient(to right, var(--color-accent) 0%, var(--color-heading) 100%);
   --gradient-button: linear-gradient(
@@ -107,7 +111,7 @@
   --color-band-alt: var(--palette-gray-50);
   --color-surface: var(--palette-white);
   --color-border: var(--palette-gray-200);
-  --color-field-border: var(--palette-gray-400);
+  --color-field-border: var(--palette-green-900);
   --color-heading: var(--palette-green-900);
   --color-text: var(--palette-ink);
   --color-text-muted: var(--palette-gray-600);
@@ -121,6 +125,8 @@
   --color-footer: var(--palette-green-900);
   --color-on-footer: var(--palette-white);
   --color-header-sticky: var(--palette-gray-50);
+  --color-field: var(--palette-gray-50);
+  --color-danger: var(--palette-red-600);
 
   --gradient-button: linear-gradient(
     to right,

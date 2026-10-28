@@ -3,6 +3,7 @@ import Preloader from '@/components/layout/Preloader.astro';
 import ScrollTopButton from '@/components/layout/ScrollTopButton.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import CallToActionSection from '@/components/sections/CallToActionSection.astro';
+import ContactSection from '@/components/sections/ContactSection.astro';
 import FaqSection from '@/components/sections/FaqSection.astro';
 import HeroSection from '@/components/sections/HeroSection.astro';
 import HighlightsSection from '@/components/sections/HighlightsSection.astro';
@@ -45,6 +46,7 @@ const content = getContent(locale);
     <TestimonialsSection content={content} />
     <FaqSection content={content} />
     <CallToActionSection locale={locale} content={content} />
+    <ContactSection locale={locale} content={content} />
   </main>
   <ScrollTopButton label={content.ui.backToTop} />
 </BaseLayout>

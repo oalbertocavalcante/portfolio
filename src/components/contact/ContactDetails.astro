@@ -1,0 +1,153 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { siteConfig } from '@/config/site';
+import type { ContactInfoText } from '@/data/types';
+import type { IconName } from '@/lib/icons';
+import { assertAllowedExternalUrl } from '@/lib/links';
+
+interface Props {
+  info: ContactInfoText;
+}
+
+interface DetailItem {
+  icon: IconName;
+  label: string;
+  value: string;
+  href?: string;
+  external?: boolean;
+}
+
+const { info } = Astro.props;
+const { email, phone } = siteConfig.contact;
+const { linkedin, github } = siteConfig.social;
+
+function displayUrl(url: string): string {
+  const parsed = new URL(url);
+  return `${parsed.hostname.replace(/^www\./, '')}${parsed.pathname.replace(/\/$/, '')}`;
+}
+
+const items: DetailItem[] = [];
+
+if (linkedin) {
+  const href = assertAllowedExternalUrl(linkedin, 'social.linkedin');
+  items.push({
+    icon: 'bi:linkedin',
+    label: 'LinkedIn',
+    value: displayUrl(href),
+    href,
+    external: true,
+  });
+}
+
+if (github) {
+  const href = assertAllowedExternalUrl(github, 'social.github');
+  items.push({ icon: 'bi:github', label: 'GitHub', value: displayUrl(href), href, external: true });
+}
+
+if (email) {
+  items.push({
+    icon: 'bi:envelope',
+    label: info.emailLabel,
+    value: email,
+    href: `mailto:${email}`,
+  });
+}
+
+if (phone) {
+  items.push({
+    icon: 'bi:telephone',
+    label: info.phoneLabel,
+    value: phone,
+    href: `tel:${phone.replace(/[^\d+]/g, '')}`,
+  });
+}
+
+if (info.location) {
+  items.push({ icon: 'bi:geo-alt', label: info.locationLabel, value: info.location });
+}
+---
+
+{items.length > 0 && (
+  <ul class="contact-details list-reset" aria-label={info.label}>
+    {items.map((item, index) => (
+      <li class="contact-details__item" data-reveal data-reveal-delay={String(index + 2)}>
+        <span class="contact-details__icon">
+          <Icon name={item.icon} />
+        </span>
+        <p class="contact-details__label">{item.label}</p>
+        {item.href ? (
+          <a
+            class="contact-details__value"
+            href={item.href}
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener noreferrer' : undefined}
+          >
+            {item.value}
+          </a>
+        ) : (
+          <span class="contact-details__value">{item.value}</span>
+        )}
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+  }
+
+  .contact-details__item {
+    position: relative;
+    min-height: 50px;
+    padding-left: 75px;
+  }
+
+  .contact-details__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-image: linear-gradient(
+      161deg,
+      var(--color-accent-deep) 0%,
+      var(--color-accent-emphasis) 100%
+    );
+    color: var(--color-on-emphasis);
+    font-size: 20px;
+  }
+
+  .contact-details__label {
+    margin-bottom: 3px;
+  }
+
+  .contact-details__value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: var(--fw-medium);
+    color: var(--color-heading);
+    overflow-wrap: anywhere;
+    transition: color var(--duration-base) ease-in-out;
+  }
+
+  a.contact-details__value:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 991.98px) {
+    .contact-details__item {
+      padding-left: 65px;
+    }
+
+    .contact-details__value {
+      font-size: 1.125rem;
+    }
+  }
+</style>

@@ -165,6 +165,69 @@ export interface CallToActionContent {
   projectsLabel: string;
 }
 
+export interface ContactSubject {
+  id: string;
+  label: string;
+}
+
+export interface ContactFormText {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+  required: string;
+  optional: string;
+  submit: string;
+  privacyNote: string;
+  subjects: ContactSubject[];
+}
+
+export interface ContactInfoText {
+  label: string;
+  locationLabel: string;
+  location: string;
+  emailLabel: string;
+  phoneLabel: string;
+}
+
+export interface ContactMessages {
+  required: string;
+  tooShort: string;
+  tooLong: string;
+  invalidName: string;
+  invalidEmail: string;
+  disposableEmail: string;
+  invalidPhone: string;
+  invalidSubject: string;
+  invisibleCharacters: string;
+  markup: string;
+  code: string;
+  links: string;
+  repetition: string;
+  shouting: string;
+  blockedLanguage: string;
+  fixErrors: string;
+  tooFast: string;
+  verificationFailed: string;
+  rateLimited: string;
+  captchaPending: string;
+  captchaFailed: string;
+  sending: string;
+  success: string;
+  failure: string;
+  networkFailure: string;
+  topicTemplate: string;
+  emailSubject: string;
+}
+
+export interface ContactContent extends SectionIntro {
+  form: ContactFormText;
+  info: ContactInfoText;
+  messages: ContactMessages;
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -182,4 +245,5 @@ export interface SiteContent {
   testimonials: TestimonialsContent;
   faq: FaqContent;
   callToAction: CallToActionContent;
+  contact: ContactContent;
 }

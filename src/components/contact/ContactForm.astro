@@ -1,0 +1,320 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { siteConfig } from '@/config/site';
+import type { ContactContent } from '@/data/types';
+import { localeSettings, type Locale } from '@/i18n/locales';
+import { FIELD_LIMITS } from '@/scripts/contact/field-rules';
+
+interface Props {
+  locale: Locale;
+  contact: ContactContent;
+}
+
+const { locale, contact } = Astro.props;
+const { form, messages } = contact;
+const endpoint = siteConfig.contact.formEndpoint;
+const siteKey = siteConfig.contact.turnstileSiteKey;
+
+if (!/^https:\/\/formspree\.io\/f\/[a-z0-9]+$/i.test(endpoint)) {
+  throw new Error(`Endpoint do formulário inválido: ${endpoint}`);
+}
+
+const required = `(${form.required})`;
+const optional = `(${form.optional})`;
+---
+
+<form
+  class="contact-form"
+  action={endpoint}
+  method="post"
+  accept-charset="utf-8"
+  novalidate
+  data-contact-form
+  data-endpoint={endpoint}
+  data-language={localeSettings[locale].htmlLang}
+  data-messages={JSON.stringify(messages)}
+>
+  <div class="contact-form__grid">
+    <div class="form-field">
+      <label
+        class="visually-hidden"
+        for="contact-first-name"
+      >{`${form.firstName} ${required}`}</label>
+      <input
+        id="contact-first-name"
+        name="nome"
+        type="text"
+        autocomplete="given-name"
+        maxlength={FIELD_LIMITS.nome.max}
+        placeholder={form.firstName}
+        aria-describedby="contact-first-name-error"
+        required
+      />
+      <p class="form-field__error" id="contact-first-name-error" data-error-for="nome" hidden></p>
+    </div>
+
+    <div class="form-field">
+      <label
+        class="visually-hidden"
+        for="contact-last-name"
+      >{`${form.lastName} ${optional}`}</label>
+      <input
+        id="contact-last-name"
+        name="sobrenome"
+        type="text"
+        autocomplete="family-name"
+        maxlength={FIELD_LIMITS.sobrenome.max}
+        placeholder={form.lastName}
+        aria-describedby="contact-last-name-error"
+      />
+      <p
+        class="form-field__error"
+        id="contact-last-name-error"
+        data-error-for="sobrenome"
+        hidden
+      ></p>
+    </div>
+
+    <div class="form-field">
+      <label class="visually-hidden" for="contact-email">{`${form.email} ${required}`}</label>
+      <input
+        id="contact-email"
+        name="email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        maxlength={FIELD_LIMITS.email.max}
+        placeholder={form.email}
+        aria-describedby="contact-email-error"
+        spellcheck="false"
+        required
+      />
+      <p class="form-field__error" id="contact-email-error" data-error-for="email" hidden></p>
+    </div>
+
+    <div class="form-field">
+      <label class="visually-hidden" for="contact-phone">{`${form.phone} ${optional}`}</label>
+      <input
+        id="contact-phone"
+        name="telefone"
+        type="tel"
+        inputmode="tel"
+        autocomplete="tel"
+        maxlength={FIELD_LIMITS.telefone.max}
+        placeholder={`${form.phone} ${optional}`}
+        aria-describedby="contact-phone-error"
+      />
+      <p class="form-field__error" id="contact-phone-error" data-error-for="telefone" hidden></p>
+    </div>
+
+    <div class="form-field form-field--wide">
+      <label class="visually-hidden" for="contact-subject">{`${form.subject} ${required}`}</label>
+      <div class="form-field__select">
+        <select
+          id="contact-subject"
+          name="assunto"
+          aria-describedby="contact-subject-error"
+          required
+        >
+          <option value="">{form.subject}</option>
+          {form.subjects.map((subject) => (
+            <option value={subject.id}>{subject.label}</option>
+          ))}
+        </select>
+        <Icon name="bi:chevron-down" class="form-field__chevron" />
+      </div>
+      <p class="form-field__error" id="contact-subject-error" data-error-for="assunto" hidden></p>
+    </div>
+
+    <div class="form-field form-field--wide">
+      <label class="visually-hidden" for="contact-message">{`${form.message} ${required}`}</label>
+      <textarea
+        id="contact-message"
+        name="mensagem"
+        rows="7"
+        minlength={FIELD_LIMITS.mensagem.min}
+        maxlength={FIELD_LIMITS.mensagem.max}
+        placeholder={form.message}
+        aria-describedby="contact-message-error"
+        required
+      ></textarea>
+      <p class="form-field__error" id="contact-message-error" data-error-for="mensagem" hidden></p>
+    </div>
+
+    <div class="contact-form__trap" aria-hidden="true">
+      <label for="contact-website">Website</label>
+      <input
+        id="contact-website"
+        name="_gotcha"
+        type="text"
+        tabindex="-1"
+        autocomplete="off"
+        data-form-trap
+      />
+    </div>
+
+    {siteKey && (
+      <div class="contact-form__captcha form-field--wide" data-turnstile data-sitekey={siteKey} />
+    )}
+
+    <div class="contact-form__footer form-field--wide">
+      <button type="submit" class="button button--primary contact-form__submit" data-form-submit>
+        {form.submit}
+      </button>
+      <p class="contact-form__privacy">{form.privacyNote}</p>
+      <p class="contact-form__status" role="status" aria-live="polite" data-form-status hidden></p>
+    </div>
+  </div>
+</form>
+
+<script>
+  import '@/scripts/contact/contact-form';
+</script>
+
+<style>
+  .contact-form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 16px;
+  }
+
+  .form-field {
+    margin-bottom: 15px;
+  }
+
+  .form-field--wide {
+    grid-column: 1 / -1;
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    display: block;
+    width: 100%;
+    padding: 14px 20px;
+    border: 1px solid var(--color-field-border);
+    border-radius: 8px;
+    background-color: var(--color-field);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-heading);
+    transition: border-color var(--duration-fast) ease-out;
+  }
+
+  .form-field input::placeholder,
+  .form-field textarea::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    border-color: var(--color-accent);
+    outline: 2px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+    outline-offset: 1px;
+  }
+
+  .form-field [aria-invalid='true'] {
+    border-color: var(--color-danger);
+  }
+
+  .form-field textarea {
+    height: 200px;
+    resize: none;
+  }
+
+  .form-field__select {
+    position: relative;
+  }
+
+  .form-field__select select {
+    padding: 17px 48px 17px 20px;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .form-field__select select:has(option[value='']:checked) {
+    color: var(--color-text-muted);
+  }
+
+  .form-field__select select option {
+    color: var(--color-text);
+    background-color: var(--color-surface);
+  }
+
+  .form-field__select :global(.form-field__chevron) {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    font-size: 14px;
+    color: var(--color-accent);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  .form-field__error {
+    margin: 6px 0 0;
+    font-size: 0.875rem;
+    color: var(--color-danger);
+  }
+
+  .contact-form__trap {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .contact-form__captcha {
+    margin-bottom: 15px;
+  }
+
+  .contact-form__captcha:empty {
+    margin-bottom: 0;
+  }
+
+  .contact-form__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+  }
+
+  .contact-form__submit {
+    padding: 20px 35px;
+  }
+
+  .contact-form__privacy {
+    flex: 1 1 200px;
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .contact-form__status {
+    flex-basis: 100%;
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .contact-form__status[data-tone='success'] {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .contact-form__status[data-tone='error'] {
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+  }
+
+  @media (max-width: 575.98px) {
+    .contact-form__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
