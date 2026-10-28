@@ -2,6 +2,7 @@
 import Preloader from '@/components/layout/Preloader.astro';
 import ScrollTopButton from '@/components/layout/ScrollTopButton.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
+import FaqSection from '@/components/sections/FaqSection.astro';
 import HeroSection from '@/components/sections/HeroSection.astro';
 import HighlightsSection from '@/components/sections/HighlightsSection.astro';
 import ProjectsSection from '@/components/sections/ProjectsSection.astro';
@@ -41,6 +42,7 @@ const content = getContent(locale);
     <ResumeSection content={content} />
     <SkillsSection content={content} />
     <TestimonialsSection content={content} />
+    <FaqSection content={content} />
   </main>
   <ScrollTopButton label={content.ui.backToTop} />
 </BaseLayout>

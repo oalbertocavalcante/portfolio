@@ -146,6 +146,17 @@ export interface TestimonialsContent extends SectionIntro {
   items: TestimonialItem[];
 }
 
+export interface FaqItem {
+  question: string;
+  answer: string[];
+}
+
+export interface FaqContent {
+  eyebrow: string;
+  title: string;
+  items: FaqItem[];
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -161,4 +172,5 @@ export interface SiteContent {
   resume: ResumeContent;
   skills: SkillsContent;
   testimonials: TestimonialsContent;
+  faq: FaqContent;
 }

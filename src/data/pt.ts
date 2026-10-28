@@ -214,4 +214,34 @@ export const pt = {
     description: 'Relatos de quem já trabalhou comigo em projetos e equipes.',
     items: [],
   },
+  faq: {
+    eyebrow: 'Perguntas frequentes',
+    title: 'Como posso ajudar?',
+    items: [
+      {
+        question: 'Você está disponível para novas oportunidades?',
+        answer: [
+          'Sim. Estou aberto a oportunidades de emprego, estágio e projetos pontuais. Use o formulário de contato para conversarmos.',
+        ],
+      },
+      {
+        question: 'Quais tecnologias você mais utiliza?',
+        answer: [
+          'Trabalho principalmente com Python, JavaScript e TypeScript, além de ferramentas de automação e infraestrutura. A seção de habilidades traz a lista completa.',
+        ],
+      },
+      {
+        question: 'Você trabalha de forma remota?',
+        answer: [
+          'Sim. Tenho experiência com trabalho remoto e híbrido, com comunicação clara e acompanhamento frequente.',
+        ],
+      },
+      {
+        question: 'Como posso entrar em contato?',
+        answer: [
+          'Pelo formulário desta página ou pelo LinkedIn. Costumo responder em até dois dias úteis.',
+        ],
+      },
+    ],
+  },
 } satisfies SiteContent;

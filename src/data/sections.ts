@@ -9,7 +9,7 @@ export function getEnabledSections(content: SiteContent): Set<SectionKey> {
     resume: content.resume.experience.items.length > 0 || content.resume.education.items.length > 0,
     skills: content.skills.items.length > 0,
     testimonials: content.testimonials.items.length > 0,
-    faq: false,
+    faq: content.faq.items.length > 0,
     contact: true,
   };
   return new Set(

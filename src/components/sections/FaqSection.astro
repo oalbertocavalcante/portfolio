@@ -1,0 +1,149 @@
+---
+import PageSection from '@/components/layout/PageSection.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import type { SiteContent } from '@/data/types';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const { faq, anchors } = content;
+const headingId = 'faq-title';
+---
+
+{faq.items.length > 0 && (
+  <PageSection section="faq" anchor={anchors.faq} tone="band" labelledBy={headingId} class="faq">
+    <div class="container">
+      <SectionHeading id={headingId} variant="eyebrow" eyebrow={faq.eyebrow} title={faq.title} />
+      <div class="faq__list">
+        {faq.items.map((item, index) => (
+          <details
+            class="faq-item"
+            name="faq"
+            open={index === 0}
+            data-reveal
+            data-reveal-delay={String(Math.min(index + 3, 9))}
+          >
+            <summary class="faq-item__question">
+              <span>{item.question}</span>
+              <Icon name="bi:plus-circle" class="faq-item__icon faq-item__icon--open" />
+              <Icon name="bi:dash-circle" class="faq-item__icon faq-item__icon--close" />
+            </summary>
+            <div class="faq-item__answer">
+              {item.answer.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </PageSection>
+)}
+
+<style>
+  .faq {
+    padding: var(--space-section) 0;
+  }
+
+  .faq__list {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    position: relative;
+    margin-bottom: 25px;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+    border-radius: 15px;
+    background-color: var(--color-surface);
+    interpolate-size: allow-keywords;
+  }
+
+  :global(:root[data-theme='light']) .faq-item {
+    background-color: var(--color-canvas-alt);
+  }
+
+  .faq-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .faq-item::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height var(--duration-fast) ease,
+      content-visibility var(--duration-fast) allow-discrete;
+  }
+
+  .faq-item[open]::details-content {
+    height: auto;
+  }
+
+  .faq-item__question {
+    position: relative;
+    display: block;
+    padding: 20px 55px 20px 30px;
+    border-radius: 15px;
+    font-size: 1.25rem;
+    font-weight: var(--fw-medium);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--color-heading);
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .faq-item__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item__question :global(.faq-item__icon) {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-size: 26px;
+    color: var(--color-accent);
+    transition: transform var(--duration-fast) ease-in-out;
+  }
+
+  .faq-item__question :global(.faq-item__icon--close) {
+    display: none;
+  }
+
+  .faq-item[open] .faq-item__question :global(.faq-item__icon--open) {
+    display: none;
+  }
+
+  .faq-item[open] .faq-item__question :global(.faq-item__icon--close) {
+    display: inline-block;
+  }
+
+  .faq-item__answer {
+    padding: 5px 30px 30px;
+    color: var(--color-text-muted);
+  }
+
+  .faq-item__answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 575.98px) {
+    .faq-item__question {
+      padding: 17px 45px 17px 20px;
+      font-size: 1.125rem;
+    }
+
+    .faq-item__question :global(.faq-item__icon) {
+      top: 17px;
+      right: 17px;
+      font-size: 22px;
+    }
+
+    .faq-item__answer {
+      padding: 5px 20px 20px;
+    }
+  }
+</style>

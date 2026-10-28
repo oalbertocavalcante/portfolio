@@ -205,4 +205,34 @@ export const en = {
     description: 'Feedback from people who have worked with me on projects and teams.',
     items: [],
   },
+  faq: {
+    eyebrow: 'Frequently asked questions',
+    title: 'How can I help?',
+    items: [
+      {
+        question: 'Are you available for new opportunities?',
+        answer: [
+          'Yes. I am open to job, internship and project opportunities. Use the contact form so we can talk.',
+        ],
+      },
+      {
+        question: 'Which technologies do you use the most?',
+        answer: [
+          'I mainly work with Python, JavaScript and TypeScript, along with automation and infrastructure tools. The skills section has the full list.',
+        ],
+      },
+      {
+        question: 'Do you work remotely?',
+        answer: [
+          'Yes. I have experience with remote and hybrid work, with clear communication and frequent updates.',
+        ],
+      },
+      {
+        question: 'How can I get in touch?',
+        answer: [
+          'Through the form on this page or on LinkedIn. I usually reply within two business days.',
+        ],
+      },
+    ],
+  },
 } satisfies SiteContent;
