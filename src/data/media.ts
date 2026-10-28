@@ -12,7 +12,10 @@ const projects: Record<string, ImageMetadata> = {
   'report-automation': reportAutomation,
 };
 
+const testimonials: Record<string, ImageMetadata> = {};
+
 export const media = {
   profile,
   projects,
+  testimonials,
 };

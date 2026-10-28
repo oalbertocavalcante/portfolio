@@ -18,6 +18,8 @@ export const en = {
     switchToLight: 'Switch to light theme',
     switchToDark: 'Switch to dark theme',
     languageSelector: 'Language',
+    carouselSlide: '{{index}} of {{slidesLength}}',
+    carouselBullet: 'Go to testimonial {{index}}',
   },
   anchors: {
     intro: 'home',
@@ -197,5 +199,10 @@ export const en = {
       { name: 'Docker', icon: 'devicon:docker', level: 70 },
       { name: 'Linux', icon: 'devicon:linux', level: 85 },
     ],
+  },
+  testimonials: {
+    title: 'What people say',
+    description: 'Feedback from people who have worked with me on projects and teams.',
+    items: [],
   },
 } satisfies SiteContent;

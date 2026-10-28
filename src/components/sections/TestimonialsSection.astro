@@ -1,0 +1,271 @@
+---
+import { Image } from 'astro:assets';
+import PageSection from '@/components/layout/PageSection.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { media } from '@/data/media';
+import type { SiteContent } from '@/data/types';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const { testimonials, anchors, ui } = content;
+const headingId = 'testimonials-title';
+
+const items = testimonials.items.map((item) => {
+  if (!item.photo) return { ...item, image: undefined };
+  const image = media.testimonials[item.photo];
+  if (!image) throw new Error(`Foto não encontrada para o depoimento: ${item.photo}`);
+  return { ...item, image };
+});
+---
+
+{items.length > 0 && (
+  <PageSection
+    section="testimonials"
+    anchor={anchors.testimonials}
+    tone="band-alt"
+    labelledBy={headingId}
+    class="testimonials"
+  >
+    <div class="container-wide testimonials__grid">
+      <div class="testimonials__intro">
+        <SectionHeading
+          id={headingId}
+          title={testimonials.title}
+          description={testimonials.description}
+          align="start"
+        />
+      </div>
+      <div class="testimonials__carousel" data-reveal="fade-left" data-reveal-delay="5">
+        <div
+          class="swiper testimonials__swiper"
+          data-testimonials
+          data-label-slide={ui.carouselSlide}
+          data-label-bullet={ui.carouselBullet}
+        >
+          <ul class="swiper-wrapper list-reset">
+            {items.map((item) => (
+              <li class="swiper-slide testimonials__slide">
+                <figure class="testimonial">
+                  {item.image && (
+                    <div class="testimonial__photo">
+                      <Image src={item.image} alt="" widths={[120, 240]} sizes="120px" />
+                    </div>
+                  )}
+                  <div class="testimonial__mark" aria-hidden="true">
+                    <svg viewBox="0 0 22 22" focusable="false">
+                      <path d="M.105 2.19C.03.989 1.025-.006 2.227.069l17.27 1.082c1.718.108 2.506 2.193 1.288 3.41L4.598 20.749c-1.218 1.217-3.303.43-3.41-1.29Z" />
+                    </svg>
+                    <svg viewBox="0 0 22 22" focusable="false">
+                      <path d="M.105 2.19C.03.989 1.025-.006 2.227.069l17.27 1.082c1.718.108 2.506 2.193 1.288 3.41L4.598 20.749c-1.218 1.217-3.303.43-3.41-1.29Z" />
+                    </svg>
+                  </div>
+                  <blockquote class="testimonial__quote">
+                    <p>{item.quote}</p>
+                  </blockquote>
+                  <figcaption>
+                    <p class="testimonial__name">{item.name}</p>
+                    <p class="testimonial__role">{item.role}</p>
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+          <div class="testimonials__pagination" data-testimonials-pagination />
+        </div>
+      </div>
+    </div>
+  </PageSection>
+)}
+
+<script>
+  import '@/scripts/testimonials-slider';
+</script>
+
+<style>
+  .testimonials {
+    overflow-x: clip;
+    padding: var(--space-section) 0;
+  }
+
+  .testimonials__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+  }
+
+  .testimonials__intro,
+  .testimonials__carousel {
+    width: 48%;
+    min-width: 0;
+  }
+
+  .testimonials__slide {
+    width: 300px;
+    height: auto;
+  }
+
+  .testimonial {
+    height: 100%;
+    margin: 0;
+    padding: 25px;
+    border-radius: 15px;
+    background-color: var(--color-surface);
+  }
+
+  .testimonial__photo {
+    width: 40%;
+    max-width: 120px;
+    margin-bottom: 20px;
+  }
+
+  .testimonial__photo :global(img) {
+    width: 100%;
+    border-radius: 5px 5px 5px 125px;
+  }
+
+  .testimonial__mark {
+    display: flex;
+    margin-bottom: 25px;
+  }
+
+  .testimonial__mark svg {
+    width: 22px;
+    height: 22px;
+    margin-right: 5px;
+    fill: var(--color-accent);
+  }
+
+  :global(.swiper-slide-active) .testimonial__mark svg:first-child,
+  :global(.swiper-slide-next) .testimonial__mark svg:first-child {
+    animation: testimonial-turn 1s 0.5s both;
+  }
+
+  :global(.swiper-slide-active) .testimonial__mark svg:last-child,
+  :global(.swiper-slide-next) .testimonial__mark svg:last-child {
+    animation: testimonial-turn-shift 1s 0.5s both;
+  }
+
+  .testimonial__quote {
+    margin: 0 0 50px;
+  }
+
+  .testimonial__quote p {
+    margin: 0;
+    font-size: var(--fs-body);
+  }
+
+  .testimonial__name {
+    margin-bottom: 5px;
+    font-size: 1.125rem;
+    font-weight: var(--fw-bold);
+    color: var(--color-heading);
+  }
+
+  .testimonial__role {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .testimonials__pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 25px;
+  }
+
+  .testimonials__pagination :global(.swiper-pagination-bullet) {
+    display: block;
+    width: 14px;
+    height: 14px;
+    padding: 3px;
+    border-radius: 50%;
+    background-color: transparent;
+    background-clip: content-box;
+    background-image: linear-gradient(rgb(217 217 217 / 0.2), rgb(217 217 217 / 0.2));
+    cursor: pointer;
+    transition: background-image var(--duration-fast);
+  }
+
+  :global(:root[data-theme='light']) .testimonials__pagination :global(.swiper-pagination-bullet) {
+    background-image: linear-gradient(rgb(116 119 121 / 0.4), rgb(116 119 121 / 0.4));
+  }
+
+  .testimonials__pagination :global(.swiper-pagination-bullet-active),
+  :global(:root[data-theme='light'])
+    .testimonials__pagination
+    :global(.swiper-pagination-bullet-active) {
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  }
+
+  :global(html:not(.has-js)) .testimonials__swiper :global(.swiper-wrapper) {
+    gap: 30px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  :global(html:not(.has-js)) .testimonials__slide {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  @keyframes testimonial-turn {
+    from {
+      transform: rotate(0);
+    }
+
+    to {
+      transform: rotate(-45deg);
+    }
+  }
+
+  @keyframes testimonial-turn-shift {
+    from {
+      transform: translateX(0) rotate(0);
+    }
+
+    to {
+      transform: translateX(-22px) rotate(135deg);
+    }
+  }
+
+  @media (min-width: 1200px) and (max-width: 1399.98px) {
+    .testimonials__grid {
+      padding-right: 0;
+    }
+  }
+
+  @media (max-width: 1199.98px) {
+    .testimonials__grid {
+      gap: 50px;
+    }
+
+    .testimonials__intro,
+    .testimonials__carousel {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .testimonials__slide {
+      width: auto;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .testimonials__grid {
+      gap: 0;
+    }
+
+    .testimonials__intro {
+      margin-bottom: 40px;
+    }
+
+    .testimonial__quote {
+      margin-bottom: 30px;
+    }
+  }
+</style>

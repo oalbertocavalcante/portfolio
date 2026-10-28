@@ -9,7 +9,9 @@ import ResumeSection from '@/components/sections/ResumeSection.astro';
 import RoleTicker from '@/components/sections/RoleTicker.astro';
 import ServicesSection from '@/components/sections/ServicesSection.astro';
 import SkillsSection from '@/components/sections/SkillsSection.astro';
+import TestimonialsSection from '@/components/sections/TestimonialsSection.astro';
 import { getContent } from '@/data';
+import { getNavigation } from '@/data/sections';
 import type { Locale } from '@/i18n/locales';
 import { homePaths } from '@/i18n/pages';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -24,7 +26,12 @@ const content = getContent(locale);
 
 <BaseLayout locale={locale} paths={homePaths}>
   <Preloader label={content.ui.loading} />
-  <SiteHeader locale={locale} paths={homePaths} content={content} navigation={content.navigation} />
+  <SiteHeader
+    locale={locale}
+    paths={homePaths}
+    content={content}
+    navigation={getNavigation(content)}
+  />
   <main id="main">
     <HeroSection locale={locale} content={content} />
     <RoleTicker roles={content.roles} />
@@ -33,6 +40,7 @@ const content = getContent(locale);
     <ProjectsSection content={content} />
     <ResumeSection content={content} />
     <SkillsSection content={content} />
+    <TestimonialsSection content={content} />
   </main>
   <ScrollTopButton label={content.ui.backToTop} />
 </BaseLayout>

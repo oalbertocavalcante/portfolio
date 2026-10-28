@@ -28,6 +28,8 @@ export interface InterfaceText {
   switchToLight: string;
   switchToDark: string;
   languageSelector: string;
+  carouselSlide: string;
+  carouselBullet: string;
 }
 
 export interface NavigationItem {
@@ -133,6 +135,17 @@ export interface SkillsContent extends SectionIntro {
   items: SkillItem[];
 }
 
+export interface TestimonialItem {
+  quote: string;
+  name: string;
+  role: string;
+  photo?: string;
+}
+
+export interface TestimonialsContent extends SectionIntro {
+  items: TestimonialItem[];
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -147,4 +160,5 @@ export interface SiteContent {
   projects: ProjectsContent;
   resume: ResumeContent;
   skills: SkillsContent;
+  testimonials: TestimonialsContent;
 }

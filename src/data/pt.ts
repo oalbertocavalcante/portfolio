@@ -18,6 +18,8 @@ export const pt = {
     switchToLight: 'Ativar tema claro',
     switchToDark: 'Ativar tema escuro',
     languageSelector: 'Idioma',
+    carouselSlide: '{{index}} de {{slidesLength}}',
+    carouselBullet: 'Ir para o depoimento {{index}}',
   },
   anchors: {
     intro: 'inicio',
@@ -206,5 +208,10 @@ export const pt = {
       { name: 'Docker', icon: 'devicon:docker', level: 70 },
       { name: 'Linux', icon: 'devicon:linux', level: 85 },
     ],
+  },
+  testimonials: {
+    title: 'O que dizem sobre mim',
+    description: 'Relatos de quem já trabalhou comigo em projetos e equipes.',
+    items: [],
   },
 } satisfies SiteContent;
