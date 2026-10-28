@@ -1,9 +1,9 @@
 ---
-import { Image } from 'astro:assets';
 import PageSection from '@/components/layout/PageSection.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { media } from '@/data/media';
 import type { SiteContent } from '@/data/types';
+import TestimonialsCarousel from './TestimonialsCarousel.astro';
 
 interface Props {
   content: SiteContent;
@@ -39,50 +39,15 @@ const items = testimonials.items.map((item) => {
         />
       </div>
       <div class="testimonials__carousel" data-reveal="fade-left" data-reveal-delay="5">
-        <div
-          class="swiper testimonials__swiper"
-          data-testimonials
-          data-label-slide={ui.carouselSlide}
-          data-label-bullet={ui.carouselBullet}
-        >
-          <ul class="swiper-wrapper list-reset">
-            {items.map((item) => (
-              <li class="swiper-slide testimonials__slide">
-                <figure class="testimonial">
-                  {item.image && (
-                    <div class="testimonial__photo">
-                      <Image src={item.image} alt="" widths={[120, 240]} sizes="120px" />
-                    </div>
-                  )}
-                  <div class="testimonial__mark" aria-hidden="true">
-                    <svg viewBox="0 0 22 22" focusable="false">
-                      <path d="M.105 2.19C.03.989 1.025-.006 2.227.069l17.27 1.082c1.718.108 2.506 2.193 1.288 3.41L4.598 20.749c-1.218 1.217-3.303.43-3.41-1.29Z" />
-                    </svg>
-                    <svg viewBox="0 0 22 22" focusable="false">
-                      <path d="M.105 2.19C.03.989 1.025-.006 2.227.069l17.27 1.082c1.718.108 2.506 2.193 1.288 3.41L4.598 20.749c-1.218 1.217-3.303.43-3.41-1.29Z" />
-                    </svg>
-                  </div>
-                  <blockquote class="testimonial__quote">
-                    <p>{item.quote}</p>
-                  </blockquote>
-                  <figcaption>
-                    <p class="testimonial__name">{item.name}</p>
-                    <p class="testimonial__role">{item.role}</p>
-                  </figcaption>
-                </figure>
-              </li>
-            ))}
-          </ul>
-          <div class="testimonials__pagination" data-testimonials-pagination />
-        </div>
+        <TestimonialsCarousel
+          items={items}
+          slideLabel={ui.carouselSlide}
+          bulletLabel={ui.carouselBullet}
+        />
       </div>
     </div>
   </PageSection>
 )}
-
-<script>
-  import '@/scripts/testimonials-slider';
-</script>
 
 <style>
   .testimonials {
@@ -103,131 +68,6 @@ const items = testimonials.items.map((item) => {
     min-width: 0;
   }
 
-  .testimonials__slide {
-    width: 300px;
-    height: auto;
-  }
-
-  .testimonial {
-    height: 100%;
-    margin: 0;
-    padding: 25px;
-    border-radius: 15px;
-    background-color: var(--color-surface);
-  }
-
-  .testimonial__photo {
-    width: 40%;
-    max-width: 120px;
-    margin-bottom: 20px;
-  }
-
-  .testimonial__photo :global(img) {
-    width: 100%;
-    border-radius: 5px 5px 5px 125px;
-  }
-
-  .testimonial__mark {
-    display: flex;
-    margin-bottom: 25px;
-  }
-
-  .testimonial__mark svg {
-    width: 22px;
-    height: 22px;
-    margin-right: 5px;
-    fill: var(--color-accent);
-  }
-
-  :global(.swiper-slide-active) .testimonial__mark svg:first-child,
-  :global(.swiper-slide-next) .testimonial__mark svg:first-child {
-    animation: testimonial-turn 1s 0.5s both;
-  }
-
-  :global(.swiper-slide-active) .testimonial__mark svg:last-child,
-  :global(.swiper-slide-next) .testimonial__mark svg:last-child {
-    animation: testimonial-turn-shift 1s 0.5s both;
-  }
-
-  .testimonial__quote {
-    margin: 0 0 50px;
-  }
-
-  .testimonial__quote p {
-    margin: 0;
-    font-size: var(--fs-body);
-  }
-
-  .testimonial__name {
-    margin-bottom: 5px;
-    font-size: 1.125rem;
-    font-weight: var(--fw-bold);
-    color: var(--color-heading);
-  }
-
-  .testimonial__role {
-    margin: 0;
-    font-size: 0.875rem;
-  }
-
-  .testimonials__pagination {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    margin-top: 25px;
-  }
-
-  .testimonials__pagination :global(.swiper-pagination-bullet) {
-    display: block;
-    width: 14px;
-    height: 14px;
-    padding: 3px;
-    border-radius: 50%;
-    background-color: transparent;
-    background-clip: content-box;
-    background-image: linear-gradient(
-      color-mix(in srgb, var(--color-text-muted) 40%, transparent),
-      color-mix(in srgb, var(--color-text-muted) 40%, transparent)
-    );
-    cursor: pointer;
-    transition: background-image var(--duration-fast);
-  }
-
-  .testimonials__pagination :global(.swiper-pagination-bullet-active) {
-    background-image: linear-gradient(var(--color-accent), var(--color-accent));
-  }
-
-  :global(html:not(.has-js)) .testimonials__swiper :global(.swiper-wrapper) {
-    gap: 30px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-
-  :global(html:not(.has-js)) .testimonials__slide {
-    flex-shrink: 0;
-    scroll-snap-align: start;
-  }
-
-  @keyframes testimonial-turn {
-    from {
-      transform: rotate(0);
-    }
-
-    to {
-      transform: rotate(-45deg);
-    }
-  }
-
-  @keyframes testimonial-turn-shift {
-    from {
-      transform: translateX(0) rotate(0);
-    }
-
-    to {
-      transform: translateX(-22px) rotate(135deg);
-    }
-  }
-
   @media (min-width: 1200px) and (max-width: 1399.98px) {
     .testimonials__grid {
       padding-right: 0;
@@ -245,12 +85,6 @@ const items = testimonials.items.map((item) => {
     }
   }
 
-  @media (max-width: 991.98px) {
-    .testimonials__slide {
-      width: auto;
-    }
-  }
-
   @media (max-width: 767.98px) {
     .testimonials__grid {
       gap: 0;
@@ -258,10 +92,6 @@ const items = testimonials.items.map((item) => {
 
     .testimonials__intro {
       margin-bottom: 40px;
-    }
-
-    .testimonial__quote {
-      margin-bottom: 30px;
     }
   }
 </style>
