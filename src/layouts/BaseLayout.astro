@@ -1,0 +1,73 @@
+---
+import '@/styles/global.css';
+import { siteConfig } from '@/config/site';
+import { getContent } from '@/data';
+import { defaultLocale, localeSettings, locales, type Locale } from '@/i18n/locales';
+import { alternateLinks, assetPath, localeUrl } from '@/i18n/routes';
+
+interface Props {
+  locale: Locale;
+  paths: Record<Locale, string>;
+  title?: string;
+  description?: string;
+}
+
+const { locale, paths, title, description } = Astro.props;
+const content = getContent(locale);
+const settings = localeSettings[locale];
+const pageTitle = title ?? content.meta.title;
+const pageDescription = description ?? content.meta.description;
+const canonical = localeUrl(locale, paths[locale]);
+const alternates = alternateLinks(paths);
+const defaultAlternate = alternates.find((link) => link.locale === defaultLocale);
+const ogAlternates = locales.filter((code) => code !== locale);
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: siteConfig.owner.name,
+  jobTitle: content.meta.jobTitle,
+  url: localeUrl(defaultLocale),
+};
+const structuredData = JSON.stringify(person).replace(/</g, '\\u003c');
+---
+
+<!doctype html>
+<html lang={settings.htmlLang} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta name="author" content={siteConfig.owner.name} />
+    <meta name="robots" content={siteConfig.indexable ? 'index, follow' : 'noindex, nofollow'} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content={siteConfig.themeColor} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((link) => (
+      <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+    ))}
+    {defaultAlternate && <link rel="alternate" hreflang="x-default" href={defaultAlternate.href} />}
+    <link rel="icon" href={assetPath('favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={assetPath('sitemap-index.xml')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteConfig.owner.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={settings.ogLocale} />
+    {ogAlternates.map((code) => (
+      <meta property="og:locale:alternate" content={localeSettings[code].ogLocale} />
+    ))}
+    <meta name="twitter:card" content="summary" />
+    <script is:inline src={assetPath('theme-init.js')}></script>
+    <script type="application/ld+json" is:inline set:html={structuredData} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      {content.ui.skipToContent}
+    </a>
+    <slot />
+  </body>
+</html>

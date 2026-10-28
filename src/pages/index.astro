@@ -1,15 +1,8 @@
 ---
-import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { homePaths } from '@/i18n/pages';
 ---
 
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Portfólio</title>
-  </head>
-  <body>
-    <main class="container"></main>
-  </body>
-</html>
+<BaseLayout locale="pt" paths={homePaths}>
+  <main id="main"></main>
+</BaseLayout>
