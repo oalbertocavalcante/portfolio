@@ -82,6 +82,7 @@
   --color-glow: color-mix(in srgb, var(--palette-green-400) 28%, transparent);
   --color-footer: var(--palette-gray-900);
   --color-on-footer: var(--palette-snow);
+  --color-footer-accent: var(--palette-green-400);
   --color-panel: var(--palette-green-900);
   --color-on-panel: var(--palette-white);
   --color-header-sticky: var(--palette-gray-950);
@@ -124,6 +125,7 @@
   --color-glow: color-mix(in srgb, var(--palette-green-650) 16%, transparent);
   --color-footer: var(--palette-green-900);
   --color-on-footer: var(--palette-white);
+  --color-footer-accent: var(--palette-green-200);
   --color-header-sticky: var(--palette-gray-50);
   --color-field: var(--palette-gray-50);
   --color-danger: var(--palette-red-600);

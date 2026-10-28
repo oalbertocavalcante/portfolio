@@ -1,0 +1,140 @@
+---
+import BrandMark from '@/components/ui/BrandMark.astro';
+import { siteConfig } from '@/config/site';
+import type { NavigationItem, SiteContent } from '@/data/types';
+import type { Locale } from '@/i18n/locales';
+import { localePath } from '@/i18n/routes';
+
+interface Props {
+  locale: Locale;
+  content: SiteContent;
+  navigation: NavigationItem[];
+}
+
+const { locale, content, navigation } = Astro.props;
+const { footer, anchors, ui } = content;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <a
+      class="site-footer__brand"
+      href={localePath(locale)}
+      aria-label={`${siteConfig.owner.name} - ${ui.homeLink}`}
+    >
+      <BrandMark class="site-footer__mark" />
+    </a>
+
+    {navigation.length > 0 && (
+      <nav aria-label={footer.navigationLabel}>
+        <ul class="site-footer__menu list-reset">
+          {navigation.map((item) => (
+            <li>
+              <a href={`#${anchors[item.section]}`} data-scroll-link>
+                {`${item.label}.`}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
+    <p class="site-footer__copyright">
+      {`© ${year} `}
+      <span class="site-footer__owner">{siteConfig.owner.name}</span>
+      {`. ${footer.rights}`}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    --color-heading: var(--color-on-footer);
+
+    padding: 50px 0 20px;
+    background-color: var(--color-footer);
+    color: var(--color-on-footer);
+  }
+
+  .site-footer__inner {
+    text-align: center;
+  }
+
+  .site-footer__brand {
+    display: inline-flex;
+    margin-bottom: 35px;
+    border-radius: 16px;
+  }
+
+  .site-footer :global(.site-footer__mark) {
+    width: 75px;
+    height: 75px;
+  }
+
+  .site-footer__menu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+    margin-bottom: 27px;
+  }
+
+  .site-footer__menu a {
+    position: relative;
+    font-size: var(--fs-button);
+    font-weight: var(--fw-bold);
+    color: var(--color-on-footer);
+  }
+
+  .site-footer__menu a::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 4px;
+    background: linear-gradient(
+      260deg,
+      var(--color-accent-deep) 0%,
+      var(--color-footer-accent) 100%
+    );
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--duration-fast) ease-in-out;
+  }
+
+  .site-footer__menu a:hover::before,
+  .site-footer__menu a:focus-visible::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .site-footer__copyright {
+    margin: 0;
+    font-size: var(--fs-button);
+    font-weight: var(--fw-light);
+    color: var(--color-footer-accent);
+  }
+
+  .site-footer__owner {
+    font-weight: var(--fw-medium);
+  }
+
+  @media (max-width: 767.98px) {
+    .site-footer {
+      padding: 60px 0 20px;
+    }
+
+    .site-footer__menu {
+      gap: 10px 15px;
+      margin-bottom: 25px;
+    }
+
+    .site-footer__copyright {
+      font-size: 0.875rem;
+    }
+  }
+</style>

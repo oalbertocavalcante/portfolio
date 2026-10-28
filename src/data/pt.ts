@@ -312,4 +312,8 @@ export const pt = {
       emailSubject: 'Contato pelo portfólio',
     },
   },
+  footer: {
+    navigationLabel: 'Navegação do rodapé',
+    rights: 'Todos os direitos reservados.',
+  },
 } satisfies SiteContent;

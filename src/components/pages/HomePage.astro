@@ -1,6 +1,7 @@
 ---
 import Preloader from '@/components/layout/Preloader.astro';
 import ScrollTopButton from '@/components/layout/ScrollTopButton.astro';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import CallToActionSection from '@/components/sections/CallToActionSection.astro';
 import ContactSection from '@/components/sections/ContactSection.astro';
@@ -25,16 +26,12 @@ interface Props {
 
 const { locale } = Astro.props;
 const content = getContent(locale);
+const navigation = getNavigation(content);
 ---
 
 <BaseLayout locale={locale} paths={homePaths}>
   <Preloader label={content.ui.loading} />
-  <SiteHeader
-    locale={locale}
-    paths={homePaths}
-    content={content}
-    navigation={getNavigation(content)}
-  />
+  <SiteHeader locale={locale} paths={homePaths} content={content} navigation={navigation} />
   <main id="main">
     <HeroSection locale={locale} content={content} />
     <RoleTicker roles={content.roles} />
@@ -48,5 +45,6 @@ const content = getContent(locale);
     <CallToActionSection locale={locale} content={content} />
     <ContactSection locale={locale} content={content} />
   </main>
+  <SiteFooter locale={locale} content={content} navigation={navigation} />
   <ScrollTopButton label={content.ui.backToTop} />
 </BaseLayout>

@@ -228,6 +228,11 @@ export interface ContactContent extends SectionIntro {
   messages: ContactMessages;
 }
 
+export interface FooterContent {
+  navigationLabel: string;
+  rights: string;
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -246,4 +251,5 @@ export interface SiteContent {
   faq: FaqContent;
   callToAction: CallToActionContent;
   contact: ContactContent;
+  footer: FooterContent;
 }

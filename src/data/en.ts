@@ -302,4 +302,8 @@ export const en = {
       emailSubject: 'Portfolio contact',
     },
   },
+  footer: {
+    navigationLabel: 'Footer navigation',
+    rights: 'All rights reserved.',
+  },
 } satisfies SiteContent;
