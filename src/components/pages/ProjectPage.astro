@@ -156,16 +156,18 @@ const repository = project.repository
   .project-intro::before {
     content: '';
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -400px;
+    right: -400px;
     z-index: -1;
-    width: 322px;
-    height: 308px;
-    margin-top: -5%;
-    margin-right: -5%;
+    width: 800px;
+    height: 800px;
     border-radius: 50%;
-    background: linear-gradient(260deg, var(--color-accent) 0%, transparent 100%);
-    filter: blur(150px);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-accent) 34%, transparent),
+      transparent
+    );
+    pointer-events: none;
   }
 
   .project-intro__breadcrumb ol {

@@ -97,16 +97,18 @@ const titleLines = hero.title.split('\n');
   .hero::before {
     content: '';
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -400px;
+    right: -400px;
     z-index: -1;
-    width: 322px;
-    height: 308px;
-    margin-top: -5%;
-    margin-right: -5%;
+    width: 800px;
+    height: 800px;
     border-radius: 50%;
-    background: linear-gradient(260deg, var(--color-accent) 0%, transparent 100%);
-    filter: blur(150px);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-accent) 34%, transparent),
+      transparent
+    );
+    pointer-events: none;
   }
 
   .hero__outline {
@@ -217,15 +219,17 @@ const titleLines = hero.title.split('\n');
   .hero__media::before {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 220px;
-    height: 220px;
-    margin-bottom: -5%;
-    margin-left: -5%;
+    bottom: -240px;
+    left: -240px;
+    width: 520px;
+    height: 520px;
     border-radius: 50%;
-    background: linear-gradient(260deg, var(--color-accent) 0%, transparent 100%);
-    filter: blur(150px);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-accent) 16%, transparent),
+      transparent
+    );
+    pointer-events: none;
   }
 
   .hero__media :global(img) {

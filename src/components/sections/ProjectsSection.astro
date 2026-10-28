@@ -198,12 +198,16 @@ const categories = projects.categories.filter((category) => usedCategories.has(c
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 35%;
-    height: 35%;
+    width: 90%;
+    height: 90%;
     border-radius: 50%;
-    background: linear-gradient(260deg, var(--color-accent) 0%, transparent 100%);
-    filter: blur(150px);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-accent) 30%, transparent),
+      transparent
+    );
     transform: translate(-50%, -50%);
+    pointer-events: none;
   }
 
   .projects__grid {

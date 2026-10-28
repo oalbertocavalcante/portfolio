@@ -113,11 +113,14 @@ const headingId = 'call-to-action-title';
   .call-to-action__card::before {
     content: '';
     position: absolute;
-    inset: 22% 18%;
+    inset: 5% 8%;
     z-index: -1;
     border-radius: 50%;
-    background: color-mix(in srgb, var(--palette-gray-950) 45%, transparent);
-    filter: blur(60px);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--palette-gray-950) 50%, transparent),
+      transparent
+    );
   }
 
   .call-to-action__eyebrow {
