@@ -63,4 +63,5 @@ export interface SiteContent {
   header: HeaderContent;
   hero: HeroContent;
   stats: StatItem[];
+  roles: string[];
 }

@@ -49,6 +49,8 @@
   --color-accent-soft: #7ee787;
   --color-accent-deep: #0e4429;
   --color-on-accent: #0d1117;
+  --color-accent-emphasis: #238636;
+  --color-on-emphasis: #ffffff;
   --color-glow: rgb(57 211 83 / 0.28);
   --color-footer: #0d1117;
   --color-on-footer: #e6edf3;
@@ -90,6 +92,7 @@
   --color-accent-soft: #4ac26b;
   --color-accent-deep: #0e4429;
   --color-on-accent: #ffffff;
+  --color-accent-emphasis: #1f883d;
   --color-glow: rgb(31 136 61 / 0.16);
   --color-footer: #0e4429;
   --color-on-footer: #ffffff;
@@ -97,11 +100,15 @@
 
   --gradient-button: linear-gradient(
     to right,
-    #1f883d 0%,
+    var(--color-accent-emphasis) 0%,
     var(--color-accent-strong) 51%,
-    #1f883d 100%
+    var(--color-accent-emphasis) 100%
   );
-  --gradient-highlight: linear-gradient(to right, #1f883d 0%, var(--color-accent-deep) 100%);
+  --gradient-highlight: linear-gradient(
+    to right,
+    var(--color-accent-emphasis) 0%,
+    var(--color-accent-deep) 100%
+  );
 }
 
 @media (max-width: 1199.98px) {

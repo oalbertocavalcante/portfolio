@@ -1,0 +1,122 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+
+interface Props {
+  roles: string[];
+}
+
+const { roles } = Astro.props;
+const sequence = [...roles, ...roles];
+const groups = [0, 1];
+---
+
+{roles.length > 0 && (
+  <div class="role-ticker" aria-hidden="true" data-overflow-allowed>
+    <div class="role-ticker__band">
+      <div class="role-ticker__track">
+        {groups.map(() => (
+          <ul class="role-ticker__group list-reset">
+            {sequence.map((role) => (
+              <li class="role-ticker__item">
+                <Icon name="bi:asterisk" class="role-ticker__icon" />
+                <span>{role}</span>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+<style>
+  .role-ticker {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    padding: 34px 0;
+    background-color: var(--color-band-alt);
+  }
+
+  .role-ticker__band {
+    position: relative;
+    padding: 30px 0;
+    background: linear-gradient(
+      90deg,
+      var(--color-accent-emphasis) 0%,
+      var(--color-accent-deep) 100%
+    );
+  }
+
+  .role-ticker__band::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10px;
+    z-index: -1;
+    width: 110%;
+    height: 100%;
+    background-color: var(--color-accent-soft);
+    transform: rotate(-1.09deg);
+  }
+
+  .role-ticker__track {
+    display: flex;
+    width: max-content;
+    animation: role-ticker-scroll 60s linear infinite;
+  }
+
+  .role-ticker:hover .role-ticker__track {
+    animation-play-state: paused;
+  }
+
+  .role-ticker__group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  .role-ticker__item {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    padding-right: 50px;
+    font-size: 1.25rem;
+    font-weight: var(--fw-bold);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-on-emphasis);
+  }
+
+  .role-ticker__item :global(.role-ticker__icon) {
+    font-size: 20px;
+    animation: role-ticker-spin 6s linear infinite;
+  }
+
+  @keyframes role-ticker-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes role-ticker-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .role-ticker__band {
+      padding: 25px 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .role-ticker__track,
+    .role-ticker__item :global(.role-ticker__icon) {
+      animation: none;
+    }
+  }
+</style>

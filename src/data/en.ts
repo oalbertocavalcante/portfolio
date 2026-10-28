@@ -57,4 +57,12 @@ export const en = {
     { value: '10', suffix: '+', label: 'Mastered\ntechnologies' },
     { value: '5', label: 'Earned\ncertifications' },
   ],
+  roles: [
+    'Web development',
+    'Back-end',
+    'Front-end',
+    'Information security',
+    'Automation',
+    'Cloud',
+  ],
 } satisfies SiteContent;

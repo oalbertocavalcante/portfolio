@@ -58,4 +58,12 @@ export const pt = {
     { value: '10', suffix: '+', label: 'Tecnologias\ndominadas' },
     { value: '5', label: 'Certificações\nobtidas' },
   ],
+  roles: [
+    'Desenvolvimento web',
+    'Back-end',
+    'Front-end',
+    'Segurança da informação',
+    'Automação',
+    'Cloud',
+  ],
 } satisfies SiteContent;
