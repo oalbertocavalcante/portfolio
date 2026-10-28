@@ -138,6 +138,14 @@ img {
   outline-offset: 3px;
 }
 
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+[data-section] {
+  scroll-margin-top: 90px;
+}
+
 .container {
   width: 100%;
   margin-inline: auto;

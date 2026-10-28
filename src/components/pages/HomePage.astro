@@ -1,6 +1,7 @@
 ---
 import Preloader from '@/components/layout/Preloader.astro';
 import ScrollTopButton from '@/components/layout/ScrollTopButton.astro';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
 import { getContent } from '@/data';
 import type { Locale } from '@/i18n/locales';
 import { homePaths } from '@/i18n/pages';
@@ -16,6 +17,7 @@ const content = getContent(locale);
 
 <BaseLayout locale={locale} paths={homePaths}>
   <Preloader label={content.ui.loading} />
+  <SiteHeader locale={locale} paths={homePaths} content={content} navigation={content.navigation} />
   <main id="main"></main>
   <ScrollTopButton label={content.ui.backToTop} />
 </BaseLayout>

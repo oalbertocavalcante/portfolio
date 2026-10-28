@@ -1,0 +1,479 @@
+---
+import BrandMark from '@/components/ui/BrandMark.astro';
+import ButtonLink from '@/components/ui/ButtonLink.astro';
+import { siteConfig } from '@/config/site';
+import type { NavigationItem, SiteContent } from '@/data/types';
+import type { Locale } from '@/i18n/locales';
+import { localePath } from '@/i18n/routes';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+  paths: Record<Locale, string>;
+  content: SiteContent;
+  navigation: NavigationItem[];
+}
+
+const { locale, paths, content, navigation } = Astro.props;
+const { ui, anchors, header } = content;
+const email = siteConfig.contact.email;
+const panelId = 'menu-mobile';
+---
+
+<header class="site-header" data-site-header>
+  <div class="container site-header__inner">
+    <a
+      class="site-header__brand"
+      href={localePath(locale)}
+      aria-label={`${siteConfig.owner.name} - ${ui.homeLink}`}
+    >
+      <BrandMark />
+    </a>
+
+    {email && (
+      <a class="site-header__email" href={`mailto:${email}`}>
+        {email}
+      </a>
+    )}
+
+    <nav class="site-header__nav" aria-label={ui.mainNavigation}>
+      <ul class="site-header__menu list-reset">
+        {navigation.map((item) => (
+          <li>
+            <a href={`#${anchors[item.section]}`} data-nav-link data-target-section={item.section}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__preferences">
+      <LanguageSwitcher locale={locale} paths={paths} label={ui.languageSelector} />
+      <ThemeToggle toLight={ui.switchToLight} toDark={ui.switchToDark} />
+    </div>
+
+    <ButtonLink
+      class="site-header__cta"
+      href={`#${anchors[header.ctaSection]}`}
+      data-nav-link
+      data-target-section={header.ctaSection}
+    >
+      {header.ctaLabel}
+    </ButtonLink>
+
+    <button
+      type="button"
+      class="site-header__toggle"
+      aria-expanded="false"
+      aria-controls={panelId}
+      aria-label={ui.openMenu}
+      data-menu-toggle
+      data-label-open={ui.openMenu}
+      data-label-close={ui.closeMenu}
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div class="site-header__panel" id={panelId} data-mobile-menu inert>
+    <nav aria-label={ui.mainNavigation}>
+      <ul class="site-header__panel-menu list-reset">
+        {navigation.map((item) => (
+          <li>
+            <a href={`#${anchors[item.section]}`} data-nav-link data-target-section={item.section}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="site-header__panel-preferences">
+      <LanguageSwitcher locale={locale} paths={paths} label={ui.languageSelector} />
+      <ThemeToggle toLight={ui.switchToLight} toDark={ui.switchToDark} />
+    </div>
+  </div>
+</header>
+
+<script>
+  import '@/scripts/site-header';
+</script>
+
+<style>
+  .site-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 95px;
+    padding: 40px 0 20px;
+    background-color: transparent;
+    transition:
+      padding var(--duration-fast),
+      background-color var(--duration-fast);
+  }
+
+  .site-header.is-sticky {
+    position: fixed;
+    padding: 10px 0;
+    background-color: var(--color-header-sticky);
+    box-shadow: 0 0 30px var(--color-glow);
+    animation: header-enter 1s both;
+  }
+
+  .site-header.is-leaving {
+    animation: header-leave 0.5s forwards;
+  }
+
+  .site-header__inner {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 20px;
+  }
+
+  .site-header__brand {
+    display: inline-flex;
+    flex-shrink: 0;
+    border-radius: 16px;
+  }
+
+  .site-header__email {
+    margin-right: auto;
+    margin-left: 15px;
+    font-size: var(--fs-button);
+    font-weight: var(--fw-medium);
+    color: var(--color-heading);
+  }
+
+  .site-header__email:hover {
+    color: var(--color-accent);
+  }
+
+  .site-header__nav {
+    margin-left: auto;
+  }
+
+  .site-header__menu {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    column-gap: 35px;
+    white-space: nowrap;
+  }
+
+  .site-header__menu a {
+    position: relative;
+    display: flex;
+    padding: 17px 0;
+    font-size: var(--fs-button);
+    font-weight: var(--fw-medium);
+    color: var(--color-heading);
+    transition: color var(--duration-base);
+  }
+
+  .site-header__menu a::before {
+    content: '';
+    position: absolute;
+    bottom: 9px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 4px;
+    background: linear-gradient(260deg, var(--color-accent-deep) 0%, var(--color-accent) 100%);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--duration-fast) ease-in-out;
+  }
+
+  .site-header__menu a:hover::before,
+  .site-header__menu a.is-active::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .site-header__preferences {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 10px;
+    margin-left: 10px;
+  }
+
+  .site-header :global(.site-header__cta) {
+    flex-shrink: 0;
+    margin-left: 10px;
+  }
+
+  .site-header__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    flex-shrink: 0;
+    height: 25px;
+    margin-left: 25px;
+    padding: 0;
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .site-header__toggle span {
+    display: block;
+    width: 35px;
+    height: 3px;
+    margin-left: auto;
+    background: var(--color-heading);
+    transition: all var(--duration-fast) ease-in-out;
+  }
+
+  :global(:root[data-theme='light']) .site-header__toggle span {
+    background: var(--color-accent);
+  }
+
+  .site-header__toggle span:nth-child(2) {
+    width: 40px;
+    transition-delay: 200ms;
+  }
+
+  .site-header__toggle span:nth-child(3) {
+    width: 30px;
+  }
+
+  .site-header__toggle span:nth-child(4) {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    width: 3px;
+    height: 0;
+    transform: translateX(-50%);
+    transition: height 400ms;
+  }
+
+  .site-header.is-menu-open .site-header__toggle {
+    transform: rotate(45deg);
+    transition-delay: 400ms;
+  }
+
+  .site-header.is-menu-open .site-header__toggle span:nth-child(1),
+  .site-header.is-menu-open .site-header__toggle span:nth-child(3) {
+    width: 0;
+  }
+
+  .site-header.is-menu-open .site-header__toggle span:nth-child(4) {
+    height: 40px;
+    transition: height 200ms ease;
+    transition-delay: 200ms;
+  }
+
+  .site-header__panel {
+    --color-accent: var(--color-on-panel);
+    --color-on-accent: var(--color-panel);
+    --color-heading: var(--color-on-panel);
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: -1;
+    display: none;
+    width: 100%;
+    height: 90vh;
+    padding-bottom: 50px;
+    overflow-y: auto;
+    background-color: var(--color-panel);
+    transform: scaleY(0);
+    transform-origin: top;
+    visibility: hidden;
+    transition:
+      transform var(--duration-base) ease-in-out,
+      visibility 0s linear var(--duration-base);
+  }
+
+  .site-header.is-menu-open .site-header__panel {
+    transform: scaleY(1);
+    visibility: visible;
+    transition:
+      transform var(--duration-base) ease-in-out,
+      visibility 0s;
+  }
+
+  .site-header__panel-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 65%;
+    margin-inline: auto;
+    padding: 20px 0;
+  }
+
+  .site-header__panel-menu li {
+    width: 100%;
+  }
+
+  .site-header__panel-menu a {
+    display: block;
+    width: 100%;
+    padding: 15px 0;
+    font-size: 1.5625rem;
+    font-weight: var(--fw-bold);
+    line-height: 1.2;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-on-panel);
+  }
+
+  .site-header__panel-menu a:hover,
+  .site-header__panel-menu a.is-active {
+    color: var(--color-accent-soft);
+  }
+
+  .site-header__panel-preferences {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  @keyframes header-enter {
+    0% {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+
+    60% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    80% {
+      transform: translateY(-10px);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes header-leave {
+    0% {
+      transform: translateY(0);
+    }
+
+    30% {
+      transform: translateY(6px);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+  }
+
+  @media (max-width: 1399.98px) {
+    .site-header__menu {
+      column-gap: 30px;
+    }
+  }
+
+  @media (max-width: 1199.98px) {
+    .site-header {
+      padding: 30px 0 15px;
+    }
+
+    .site-header__inner {
+      column-gap: 16px;
+    }
+
+    .site-header__email {
+      margin-left: 0;
+    }
+
+    .site-header__menu {
+      column-gap: 14px;
+    }
+
+    .site-header__preferences {
+      gap: 8px;
+      margin-left: 0;
+    }
+
+    .site-header :global(.site-header__cta) {
+      margin-left: 0;
+      padding: 14px 22px;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .site-header {
+      padding: 20px 0 15px;
+    }
+
+    .site-header__toggle {
+      margin-left: 8px;
+    }
+
+    .site-header__nav,
+    .site-header__email {
+      display: none;
+    }
+
+    .site-header__preferences {
+      margin-left: auto;
+    }
+
+    .site-header__toggle,
+    .site-header__panel {
+      display: flex;
+    }
+
+    .site-header__panel {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .site-header__panel-menu {
+      max-width: 90%;
+    }
+
+    .site-header__panel-menu a {
+      padding: 12px 0;
+      font-size: 1.375rem;
+      letter-spacing: 0;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .site-header__preferences {
+      display: none;
+    }
+
+    .site-header :global(.site-header__cta) {
+      margin-left: auto;
+      padding: 13px 20px;
+    }
+
+    .site-header__toggle {
+      margin-left: 4px;
+    }
+
+    .site-header__panel-preferences {
+      display: flex;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header.is-sticky,
+    .site-header.is-leaving {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import { getContent } from '@/data';
+import { locales, localeSettings, type Locale } from '@/i18n/locales';
+import { localePath } from '@/i18n/routes';
+
+interface Props {
+  locale: Locale;
+  paths: Record<Locale, string>;
+  label: string;
+  class?: string;
+}
+
+const { locale, paths, label, class: className } = Astro.props;
+---
+
+<div class:list={['language-switcher', className]} role="group" aria-label={label}>
+  {locales.map((code) => {
+    const settings = localeSettings[code];
+    const isCurrent = code === locale;
+    return (
+      <a
+        class:list={['language-switcher__link', { 'is-current': isCurrent }]}
+        href={localePath(code, paths[code])}
+        hreflang={settings.hreflang}
+        lang={settings.htmlLang}
+        aria-label={`${settings.shortLabel} - ${settings.name}`}
+        aria-current={isCurrent ? 'page' : undefined}
+        data-language-link={isCurrent ? undefined : ''}
+        data-anchors={isCurrent ? undefined : JSON.stringify(getContent(code).anchors)}
+      >
+        {settings.shortLabel}
+      </a>
+    );
+  })}
+</div>
+
+<script>
+  import '@/scripts/language-switch';
+</script>
+
+<style>
+  .language-switcher {
+    display: inline-flex;
+    align-items: center;
+    height: 38px;
+    padding: 4px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-accent);
+  }
+
+  .language-switcher__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 100%;
+    padding: 0 8px;
+    border-radius: var(--radius-pill);
+    font-size: 0.8125rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.5px;
+    color: var(--color-accent);
+    transition:
+      background-color var(--duration-fast),
+      color var(--duration-fast);
+  }
+
+  .language-switcher__link:hover {
+    color: var(--color-heading);
+  }
+
+  .language-switcher__link.is-current {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+</style>

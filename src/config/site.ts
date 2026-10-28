@@ -5,5 +5,8 @@ export const siteConfig = {
   owner: {
     name: 'Alberto Cavalcante',
   },
+  contact: {
+    email: '',
+  },
   themeColor: '#0d1117',
 } as const;
