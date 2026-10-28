@@ -118,4 +118,46 @@ export const pt = {
       },
     ],
   },
+  projects: {
+    title: 'Projetos recentes',
+    filterLabel: 'Filtrar projetos por categoria',
+    allLabel: 'Todos',
+    linkLabel: 'Ver repositório',
+    categories: [
+      { id: 'web', label: 'Web' },
+      { id: 'api', label: 'APIs' },
+      { id: 'security', label: 'Segurança' },
+      { id: 'automation', label: 'Automação' },
+    ],
+    items: [
+      {
+        slug: 'personal-portfolio',
+        title: 'Portfólio pessoal',
+        summary: 'Site estático bilíngue com foco em desempenho e acessibilidade.',
+        categories: ['web'],
+        imageAlt: 'Tela inicial do projeto de portfólio pessoal',
+      },
+      {
+        slug: 'task-api',
+        title: 'API de tarefas',
+        summary: 'API REST com autenticação, testes automatizados e documentação.',
+        categories: ['api', 'web'],
+        imageAlt: 'Painel da API de tarefas',
+      },
+      {
+        slug: 'vulnerability-scanner',
+        title: 'Scanner de vulnerabilidades',
+        summary: 'Ferramenta de linha de comando para auditoria de aplicações web.',
+        categories: ['security'],
+        imageAlt: 'Resultado de uma varredura do scanner de vulnerabilidades',
+      },
+      {
+        slug: 'report-automation',
+        title: 'Automação de relatórios',
+        summary: 'Geração automática de relatórios a partir de múltiplas fontes de dados.',
+        categories: ['automation'],
+        imageAlt: 'Relatório gerado automaticamente',
+      },
+    ],
+  },
 } satisfies SiteContent;

@@ -84,6 +84,28 @@ export interface ServicesContent extends SectionIntro {
   items: ServiceItem[];
 }
 
+export interface ProjectCategory {
+  id: string;
+  label: string;
+}
+
+export interface ProjectItem {
+  slug: string;
+  title: string;
+  summary: string;
+  categories: string[];
+  imageAlt: string;
+  repository?: string;
+}
+
+export interface ProjectsContent extends SectionIntro {
+  filterLabel: string;
+  allLabel: string;
+  linkLabel: string;
+  categories: ProjectCategory[];
+  items: ProjectItem[];
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -95,4 +117,5 @@ export interface SiteContent {
   roles: string[];
   highlights: HighlightsContent;
   services: ServicesContent;
+  projects: ProjectsContent;
 }

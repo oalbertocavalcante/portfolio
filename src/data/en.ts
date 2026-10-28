@@ -114,4 +114,46 @@ export const en = {
       },
     ],
   },
+  projects: {
+    title: 'Recent projects',
+    filterLabel: 'Filter projects by category',
+    allLabel: 'All',
+    linkLabel: 'View repository',
+    categories: [
+      { id: 'web', label: 'Web' },
+      { id: 'api', label: 'APIs' },
+      { id: 'security', label: 'Security' },
+      { id: 'automation', label: 'Automation' },
+    ],
+    items: [
+      {
+        slug: 'personal-portfolio',
+        title: 'Personal portfolio',
+        summary: 'Bilingual static website focused on performance and accessibility.',
+        categories: ['web'],
+        imageAlt: 'Home screen of the personal portfolio project',
+      },
+      {
+        slug: 'task-api',
+        title: 'Task API',
+        summary: 'REST API with authentication, automated tests and documentation.',
+        categories: ['api', 'web'],
+        imageAlt: 'Task API dashboard',
+      },
+      {
+        slug: 'vulnerability-scanner',
+        title: 'Vulnerability scanner',
+        summary: 'Command-line tool for auditing web applications.',
+        categories: ['security'],
+        imageAlt: 'Result of a vulnerability scanner run',
+      },
+      {
+        slug: 'report-automation',
+        title: 'Report automation',
+        summary: 'Automatic report generation from multiple data sources.',
+        categories: ['automation'],
+        imageAlt: 'Automatically generated report',
+      },
+    ],
+  },
 } satisfies SiteContent;

@@ -4,6 +4,7 @@ import ScrollTopButton from '@/components/layout/ScrollTopButton.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import HeroSection from '@/components/sections/HeroSection.astro';
 import HighlightsSection from '@/components/sections/HighlightsSection.astro';
+import ProjectsSection from '@/components/sections/ProjectsSection.astro';
 import RoleTicker from '@/components/sections/RoleTicker.astro';
 import ServicesSection from '@/components/sections/ServicesSection.astro';
 import { getContent } from '@/data';
@@ -27,6 +28,7 @@ const content = getContent(locale);
     <RoleTicker roles={content.roles} />
     <HighlightsSection content={content} />
     <ServicesSection content={content} />
+    <ProjectsSection content={content} />
   </main>
   <ScrollTopButton label={content.ui.backToTop} />
 </BaseLayout>

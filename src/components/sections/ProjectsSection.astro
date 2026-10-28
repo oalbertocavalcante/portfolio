@@ -1,0 +1,381 @@
+---
+import { Image } from 'astro:assets';
+import PageSection from '@/components/layout/PageSection.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { media } from '@/data/media';
+import type { SiteContent } from '@/data/types';
+import { assertAllowedExternalUrl } from '@/lib/links';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const { projects, anchors } = content;
+const headingId = 'projects-title';
+
+const items = projects.items.map((item) => {
+  const image = media.projects[item.slug];
+  if (!image) throw new Error(`Imagem não encontrada para o projeto: ${item.slug}`);
+  const repository = item.repository
+    ? assertAllowedExternalUrl(item.repository, `projeto ${item.slug}`)
+    : undefined;
+  return { ...item, image, repository };
+});
+
+const usedCategories = new Set(items.flatMap((item) => item.categories));
+const categories = projects.categories.filter((category) => usedCategories.has(category.id));
+---
+
+{items.length > 0 && (
+  <PageSection
+    section="projects"
+    anchor={anchors.projects}
+    tone="band"
+    labelledBy={headingId}
+    class="projects"
+  >
+    <div class="container-wide">
+      <SectionHeading
+        id={headingId}
+        title={projects.title}
+        description={projects.description}
+        class="projects__heading"
+      />
+
+      {categories.length > 1 && (
+        <div class="projects__filter" data-reveal data-reveal-delay="3">
+          <div
+            class="filter-group"
+            role="group"
+            aria-label={projects.filterLabel}
+            data-project-filter
+          >
+            <button
+              type="button"
+              class="filter-group__button is-active"
+              aria-pressed="true"
+              data-filter="*"
+            >
+              {projects.allLabel}
+            </button>
+            {categories.map((category) => (
+              <button
+                type="button"
+                class="filter-group__button"
+                aria-pressed="false"
+                data-filter={category.id}
+              >
+                {category.label}
+              </button>
+            ))}
+            <span class="filter-group__highlight" aria-hidden="true" data-filter-highlight />
+          </div>
+        </div>
+      )}
+
+      <div class="projects__stage" data-reveal data-reveal-delay="3">
+        <ul class="projects__grid list-reset" data-project-grid>
+          {items.map((item) => (
+            <li class="project-card" data-project-item data-categories={item.categories.join(' ')}>
+              <div class="project-card__media">
+                <Image
+                  src={item.image}
+                  alt={item.imageAlt}
+                  widths={[550, 1100]}
+                  sizes="(min-width: 1400px) 550px, (min-width: 768px) 40vw, 90vw"
+                />
+              </div>
+              <div class="project-card__content">
+                <h3 class="project-card__title">{item.title}</h3>
+                <p class="project-card__summary">{item.summary}</p>
+                {item.repository && (
+                  <>
+                    <Icon name="bi:arrow-up-right" class="project-card__icon" />
+                    <a
+                      class="project-card__link"
+                      href={item.repository}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span class="visually-hidden">{`${projects.linkLabel}: ${item.title}`}</span>
+                    </a>
+                  </>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </PageSection>
+)}
+
+<script>
+  import '@/scripts/projects-filter';
+</script>
+
+<style>
+  .projects {
+    padding: var(--space-section) 0 90px;
+  }
+
+  .projects :global(.projects__heading) {
+    margin-bottom: 50px;
+  }
+
+  .projects__filter {
+    text-align: center;
+  }
+
+  .filter-group {
+    position: relative;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 6px 8px;
+    border-radius: 60px;
+    background-color: var(--color-band-alt);
+  }
+
+  .filter-group__button {
+    position: relative;
+    z-index: 2;
+    padding: 12px 25px;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-button);
+    line-height: 1;
+    color: var(--color-heading);
+    transition: color var(--duration-fast);
+  }
+
+  :global(:root[data-theme='light']) .filter-group__button {
+    color: var(--color-accent);
+  }
+
+  .filter-group__button.is-active,
+  :global(:root[data-theme='light']) .filter-group__button.is-active {
+    color: var(--color-on-emphasis);
+  }
+
+  :global(html:not(.has-js)) .filter-group {
+    display: none;
+  }
+
+  .filter-group__highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 0;
+    height: 0;
+    border-radius: var(--radius-pill);
+    background-image: linear-gradient(
+      260deg,
+      var(--color-accent-deep) 0%,
+      var(--color-accent-emphasis) 100%
+    );
+    transition: all 0.5s ease;
+  }
+
+  .projects__stage {
+    position: relative;
+    padding-top: 50px;
+  }
+
+  .projects__stage::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 35%;
+    height: 35%;
+    border-radius: 50%;
+    background: linear-gradient(260deg, var(--color-accent) 0%, transparent 100%);
+    filter: blur(150px);
+    transform: translate(-50%, -50%);
+  }
+
+  .projects__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 4%;
+  }
+
+  .projects__grid:global(.is-enhanced) {
+    display: block;
+    transition: height 0.4s ease;
+  }
+
+  .project-card {
+    position: relative;
+    padding: 36px 36px 0;
+    border-radius: 10px;
+    background-color: var(--color-surface);
+  }
+
+  .projects__grid:global(.is-animated) .project-card {
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+  }
+
+  :global(:root[data-theme='light']) .project-card {
+    background-color: var(--color-canvas-alt);
+    box-shadow: inset 0 0 0 1px var(--color-border);
+  }
+
+  .projects__grid:global(.is-enhanced) .project-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 48%;
+  }
+
+  .project-card:global(.is-filtered-out) {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .projects__grid:global(.is-animated) .project-card:global(.is-filtered-out) {
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease,
+      visibility 0s linear 0.4s;
+  }
+
+  .project-card__media {
+    text-align: center;
+  }
+
+  .project-card__media :global(img) {
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .project-card__content {
+    position: absolute;
+    right: 0;
+    bottom: 15px;
+    left: 0;
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    padding: 20px 50px 20px 20px;
+    border-radius: 15px;
+    background-image: linear-gradient(
+      260deg,
+      var(--color-accent-deep) 0%,
+      var(--color-accent-emphasis) 100%
+    );
+    color: var(--color-on-emphasis);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all var(--duration-fast);
+  }
+
+  .project-card:hover .project-card__content,
+  .project-card:focus-within .project-card__content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .project-card__title {
+    margin-bottom: 15px;
+    font-size: var(--fs-h3);
+    color: var(--color-on-emphasis);
+  }
+
+  .project-card__summary {
+    margin-bottom: 0;
+  }
+
+  .project-card__content :global(.project-card__icon) {
+    position: absolute;
+    top: 50%;
+    right: 25px;
+    font-size: 20px;
+    color: var(--color-on-emphasis);
+    transform: translateY(-50%);
+    transition: transform 0.5s;
+  }
+
+  .project-card:hover .project-card__content :global(.project-card__icon) {
+    transform: translateY(-50%) rotate(360deg);
+  }
+
+  .project-card__link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 15px;
+  }
+
+  @media (hover: none) {
+    .project-card__content {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 1199.98px) {
+    .projects {
+      padding-bottom: 70px;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .projects :global(.projects__heading) {
+      margin-bottom: 40px;
+    }
+
+    .project-card {
+      padding: 25px 15px 0;
+    }
+
+    .project-card__content {
+      width: calc(100% - 30px);
+      padding: 15px 30px 15px 15px;
+    }
+
+    .project-card__title {
+      margin: 0;
+      font-size: 1.5625rem;
+    }
+
+    .project-card__content :global(.project-card__icon) {
+      right: 15px;
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .filter-group {
+      padding: 0 8px;
+      border-radius: 24px;
+    }
+
+    .filter-group__button {
+      padding: 10px 6px;
+      font-size: 0.875rem;
+    }
+
+    .projects__stage {
+      padding-top: 40px;
+    }
+
+    .projects__grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+    }
+
+    .projects__grid:global(.is-enhanced) .project-card {
+      width: 100%;
+    }
+  }
+</style>
