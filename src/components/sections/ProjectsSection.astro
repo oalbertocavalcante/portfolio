@@ -5,13 +5,17 @@ import Icon from '@/components/ui/Icon.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { media } from '@/data/media';
 import type { SiteContent } from '@/data/types';
+import type { Locale } from '@/i18n/locales';
+import { projectPaths } from '@/i18n/pages';
+import { localePath } from '@/i18n/routes';
 import { assertAllowedExternalUrl } from '@/lib/links';
 
 interface Props {
+  locale: Locale;
   content: SiteContent;
 }
 
-const { content } = Astro.props;
+const { locale, content } = Astro.props;
 const { projects, anchors } = content;
 const headingId = 'projects-title';
 
@@ -21,7 +25,16 @@ const items = projects.items.map((item) => {
   const repository = item.repository
     ? assertAllowedExternalUrl(item.repository, `projeto ${item.slug}`)
     : undefined;
-  return { ...item, image, repository };
+  const link = item.details
+    ? {
+        href: localePath(locale, projectPaths(item.slug)[locale]),
+        label: projects.detailsLabel,
+        external: false,
+      }
+    : repository
+      ? { href: repository, label: projects.linkLabel, external: true }
+      : undefined;
+  return { ...item, image, link };
 });
 
 const usedCategories = new Set(items.flatMap((item) => item.categories));
@@ -90,16 +103,16 @@ const categories = projects.categories.filter((category) => usedCategories.has(c
               <div class="project-card__content">
                 <h3 class="project-card__title">{item.title}</h3>
                 <p class="project-card__summary">{item.summary}</p>
-                {item.repository && (
+                {item.link && (
                   <>
                     <Icon name="bi:arrow-up-right" class="project-card__icon" />
                     <a
                       class="project-card__link"
-                      href={item.repository}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={item.link.href}
+                      target={item.link.external ? '_blank' : undefined}
+                      rel={item.link.external ? 'noopener noreferrer' : undefined}
                     >
-                      <span class="visually-hidden">{`${projects.linkLabel}: ${item.title}`}</span>
+                      <span class="visually-hidden">{`${item.link.label}: ${item.title}`}</span>
                     </a>
                   </>
                 )}

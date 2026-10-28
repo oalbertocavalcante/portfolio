@@ -1,0 +1,329 @@
+---
+import { Image } from 'astro:assets';
+import Preloader from '@/components/layout/Preloader.astro';
+import ScrollTopButton from '@/components/layout/ScrollTopButton.astro';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
+import ButtonLink from '@/components/ui/ButtonLink.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { getContent } from '@/data';
+import { media } from '@/data/media';
+import { getDetailedProjects } from '@/data/projects';
+import { getNavigation } from '@/data/sections';
+import type { Locale } from '@/i18n/locales';
+import { projectPaths } from '@/i18n/pages';
+import { localePath } from '@/i18n/routes';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { assertAllowedExternalUrl } from '@/lib/links';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const content = getContent(locale);
+const navigation = getNavigation(content);
+const project = getDetailedProjects(locale).find((item) => item.slug === slug);
+
+if (!project) {
+  throw new Error(`Projeto não encontrado: ${slug}`);
+}
+
+const image = media.projects[project.slug];
+if (!image) {
+  throw new Error(`Imagem não encontrada para o projeto: ${project.slug}`);
+}
+
+const { page } = content.projects;
+const paths = projectPaths(project.slug);
+const homeHref = localePath(locale);
+const projectsHref = `${homeHref}#${content.anchors.projects}`;
+const repository = project.repository
+  ? assertAllowedExternalUrl(project.repository, `projeto ${project.slug}`)
+  : undefined;
+---
+
+<BaseLayout
+  locale={locale}
+  paths={paths}
+  title={`${project.title} | ${content.meta.title}`}
+  description={project.summary}
+>
+  <Preloader label={content.ui.loading} />
+  <SiteHeader locale={locale} paths={paths} content={content} navigation={navigation} />
+  <main id="main">
+    <section class="project-intro" aria-labelledby="project-title">
+      <div class="container-wide">
+        <nav class="project-intro__breadcrumb" aria-label={page.breadcrumbLabel}>
+          <ol class="list-reset">
+            <li>
+              <a href={homeHref}>{page.homeLabel}</a>
+            </li>
+            <li>
+              <a href={projectsHref}>{content.projects.title}</a>
+            </li>
+            <li aria-current="page">{project.title}</li>
+          </ol>
+        </nav>
+        <h1 class="project-intro__title" id="project-title">
+          {project.title}
+        </h1>
+        <p class="project-intro__summary">{project.summary}</p>
+      </div>
+    </section>
+
+    <section class="project-body" aria-label={project.title}>
+      <div class="container-wide project-body__grid">
+        <div class="project-body__content">
+          <div class="project-body__media">
+            <Image
+              src={image}
+              alt={project.imageAlt}
+              widths={[760, 1168]}
+              sizes="(min-width: 1200px) 760px, 90vw"
+              loading="eager"
+            />
+          </div>
+          <div class="project-body__overview">
+            {project.details.overview.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </div>
+          {project.details.highlights.length > 0 && (
+            <>
+              <h2 class="project-body__subtitle">{page.highlightsLabel}</h2>
+              <ul class="project-body__highlights list-reset">
+                {project.details.highlights.map((highlight) => (
+                  <li>
+                    <Icon name="bi:check2-circle" class="project-body__check" />
+                    <span>{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+
+        <aside class="project-facts" aria-label={project.title}>
+          <dl class="project-facts__list">
+            <div>
+              <dt>{page.roleLabel}</dt>
+              <dd>{project.details.role}</dd>
+            </div>
+            <div>
+              <dt>{page.periodLabel}</dt>
+              <dd>{project.details.period}</dd>
+            </div>
+            <div>
+              <dt>{page.stackLabel}</dt>
+              <dd>
+                <ul class="project-facts__stack list-reset">
+                  {project.details.stack.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          </dl>
+          <div class="project-facts__actions">
+            {repository && (
+              <ButtonLink href={repository} icon="bi:github">
+                {page.repositoryLabel}
+              </ButtonLink>
+            )}
+            <ButtonLink href={projectsHref} variant="outline" icon="bi:arrow-left">
+              {page.backLabel}
+            </ButtonLink>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <SiteFooter locale={locale} content={content} navigation={navigation} />
+  <ScrollTopButton label={content.ui.backToTop} />
+</BaseLayout>
+
+<style>
+  .project-intro {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    padding: 200px 0 80px;
+    background-color: var(--color-band);
+  }
+
+  .project-intro::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    width: 322px;
+    height: 308px;
+    margin-top: -5%;
+    margin-right: -5%;
+    border-radius: 50%;
+    background: linear-gradient(260deg, var(--color-accent) 0%, transparent 100%);
+    filter: blur(150px);
+  }
+
+  .project-intro__breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .project-intro__breadcrumb li + li::before {
+    content: '/';
+    margin-right: 8px;
+  }
+
+  .project-intro__breadcrumb a {
+    color: var(--color-accent);
+  }
+
+  .project-intro__title {
+    max-width: 900px;
+    font-size: var(--fs-h1);
+    background-image: var(--gradient-title);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .project-intro__summary {
+    max-width: 640px;
+    margin: 0;
+    font-size: var(--fs-lead);
+    font-weight: var(--fw-light);
+  }
+
+  .project-body {
+    padding: 80px 0 var(--space-section);
+    background-color: var(--color-band-alt);
+  }
+
+  .project-body__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 50px;
+  }
+
+  .project-body__media {
+    margin-bottom: 40px;
+    padding: 36px 36px 0;
+    border-radius: 10px;
+    background-color: var(--color-surface);
+  }
+
+  .project-body__media :global(img) {
+    width: 100%;
+  }
+
+  .project-body__overview p {
+    font-size: 1.0625rem;
+  }
+
+  .project-body__subtitle {
+    margin: 40px 0 20px;
+    font-size: var(--fs-h4);
+  }
+
+  .project-body__highlights {
+    display: grid;
+    gap: 14px;
+  }
+
+  .project-body__highlights li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .project-body__highlights :global(.project-body__check) {
+    margin-top: 3px;
+    font-size: 18px;
+    color: var(--color-accent);
+  }
+
+  .project-facts {
+    position: sticky;
+    top: 110px;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: var(--color-surface);
+  }
+
+  .project-facts__list {
+    display: grid;
+    gap: 22px;
+    margin: 0 0 30px;
+  }
+
+  .project-facts__list dt {
+    margin-bottom: 4px;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .project-facts__list dd {
+    margin: 0;
+    font-weight: var(--fw-semibold);
+    color: var(--color-heading);
+  }
+
+  .project-facts__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .project-facts__stack li {
+    padding: 6px 12px;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+    border-radius: var(--radius-pill);
+    font-size: 0.8125rem;
+    font-weight: var(--fw-medium);
+    color: var(--color-accent);
+  }
+
+  .project-facts__actions {
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (max-width: 1199.98px) {
+    .project-intro {
+      padding: 160px 0 70px;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .project-body__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .project-facts {
+      position: static;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .project-intro {
+      padding: 130px 0 50px;
+    }
+
+    .project-body {
+      padding-top: 50px;
+    }
+
+    .project-body__media {
+      padding: 25px 15px 0;
+    }
+  }
+</style>

@@ -91,6 +91,14 @@ export interface ProjectCategory {
   label: string;
 }
 
+export interface ProjectDetails {
+  overview: string[];
+  role: string;
+  period: string;
+  stack: string[];
+  highlights: string[];
+}
+
 export interface ProjectItem {
   slug: string;
   title: string;
@@ -98,12 +106,26 @@ export interface ProjectItem {
   categories: string[];
   imageAlt: string;
   repository?: string;
+  details?: ProjectDetails;
+}
+
+export interface ProjectPageText {
+  homeLabel: string;
+  breadcrumbLabel: string;
+  roleLabel: string;
+  periodLabel: string;
+  stackLabel: string;
+  highlightsLabel: string;
+  repositoryLabel: string;
+  backLabel: string;
 }
 
 export interface ProjectsContent extends SectionIntro {
   filterLabel: string;
   allLabel: string;
   linkLabel: string;
+  detailsLabel: string;
+  page: ProjectPageText;
   categories: ProjectCategory[];
   items: ProjectItem[];
 }

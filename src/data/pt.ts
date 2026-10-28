@@ -125,6 +125,17 @@ export const pt = {
     filterLabel: 'Filtrar projetos por categoria',
     allLabel: 'Todos',
     linkLabel: 'Ver repositório',
+    detailsLabel: 'Ver detalhes do projeto',
+    page: {
+      homeLabel: 'Início',
+      breadcrumbLabel: 'Trilha de navegação',
+      roleLabel: 'Minha função',
+      periodLabel: 'Período',
+      stackLabel: 'Tecnologias',
+      highlightsLabel: 'Destaques',
+      repositoryLabel: 'Ver repositório no GitHub',
+      backLabel: 'Voltar aos projetos',
+    },
     categories: [
       { id: 'web', label: 'Web' },
       { id: 'api', label: 'APIs' },

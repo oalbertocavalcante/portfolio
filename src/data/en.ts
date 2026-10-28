@@ -121,6 +121,17 @@ export const en = {
     filterLabel: 'Filter projects by category',
     allLabel: 'All',
     linkLabel: 'View repository',
+    detailsLabel: 'View project details',
+    page: {
+      homeLabel: 'Home',
+      breadcrumbLabel: 'Breadcrumb',
+      roleLabel: 'My role',
+      periodLabel: 'Period',
+      stackLabel: 'Technologies',
+      highlightsLabel: 'Highlights',
+      repositoryLabel: 'View repository on GitHub',
+      backLabel: 'Back to projects',
+    },
     categories: [
       { id: 'web', label: 'Web' },
       { id: 'api', label: 'APIs' },
