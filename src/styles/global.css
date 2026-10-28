@@ -6,4 +6,5 @@
 @import '@fontsource/russo-one/latin-400.css';
 @import './tokens.css';
 @import './base.css';
+@import './buttons.css';
 @import './animations.css';
