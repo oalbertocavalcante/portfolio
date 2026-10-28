@@ -1,0 +1,154 @@
+---
+import PageSection from '@/components/layout/PageSection.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import type { SiteContent } from '@/data/types';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const { skills, anchors } = content;
+const headingId = 'skills-title';
+
+skills.items.forEach((skill) => {
+  if (!Number.isInteger(skill.level) || skill.level < 0 || skill.level > 100) {
+    throw new Error(`Nível inválido para a habilidade ${skill.name}: ${skill.level}`);
+  }
+});
+---
+
+{skills.items.length > 0 && (
+  <PageSection
+    section="skills"
+    anchor={anchors.skills}
+    tone="band"
+    labelledBy={headingId}
+    class="skills"
+  >
+    <div class="container-wide">
+      <SectionHeading
+        id={headingId}
+        title={skills.title}
+        description={skills.description}
+        class="skills__heading"
+      />
+      <ul class="skills__list list-reset">
+        {skills.items.map((skill, index) => (
+          <li class="skill" data-reveal data-reveal-delay={String(Math.min(index + 3, 9))}>
+            <div class="skill__card">
+              <Icon name={skill.icon} class="skill__icon" />
+              <p class="skill__level">{`${skill.level}%`}</p>
+            </div>
+            <p class="skill__name">{skill.name}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </PageSection>
+)}
+
+<style>
+  .skills {
+    padding: var(--space-section) 0;
+  }
+
+  .skills :global(.skills__heading) {
+    margin-bottom: 50px;
+  }
+
+  .skills__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 30px 20px;
+  }
+
+  .skill {
+    width: 100%;
+    max-width: 180px;
+    text-align: center;
+  }
+
+  .skill__card {
+    margin-bottom: 15px;
+    padding: 40px 15px 30px;
+    border: 1px solid transparent;
+    border-radius: 25px;
+    background-color: var(--color-surface);
+    transition: all 0.6s;
+  }
+
+  :global(:root[data-theme='light']) .skill__card {
+    background-color: var(--color-canvas-alt);
+  }
+
+  .skill:hover .skill__card {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent-deep);
+  }
+
+  .skill__card :global(.skill__icon) {
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 30px;
+    filter: grayscale(90%);
+    transition: all var(--duration-fast);
+  }
+
+  .skill:hover .skill__card :global(.skill__icon) {
+    filter: grayscale(0);
+    transform: scale(1.1);
+  }
+
+  .skill__level {
+    margin-bottom: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-text-muted);
+    transition: color var(--duration-base) ease-in-out;
+  }
+
+  .skill:hover .skill__level {
+    color: var(--color-accent);
+  }
+
+  :global(:root[data-theme='light']) .skill:hover .skill__level {
+    color: var(--color-accent-soft);
+  }
+
+  .skill__name {
+    margin-bottom: 0;
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 1399.98px) {
+    .skill {
+      max-width: 165px;
+    }
+
+    .skill__card {
+      padding: 30px 15px 25px;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .skills :global(.skills__heading) {
+      margin-bottom: 40px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .skill__card {
+      padding: 25px 15px;
+    }
+
+    .skill__card :global(.skill__icon) {
+      margin-bottom: 20px;
+    }
+  }
+</style>

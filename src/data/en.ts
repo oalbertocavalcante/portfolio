@@ -186,4 +186,16 @@ export const en = {
       ],
     },
   },
+  skills: {
+    title: 'My skills',
+    description: 'Technologies and tools I use every day to build complete solutions.',
+    items: [
+      { name: 'Python', icon: 'devicon:python', level: 90 },
+      { name: 'JavaScript', icon: 'devicon:javascript', level: 85 },
+      { name: 'TypeScript', icon: 'devicon:typescript', level: 80 },
+      { name: 'React', icon: 'devicon:react', level: 75 },
+      { name: 'Docker', icon: 'devicon:docker', level: 70 },
+      { name: 'Linux', icon: 'devicon:linux', level: 85 },
+    ],
+  },
 } satisfies SiteContent;

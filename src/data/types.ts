@@ -123,6 +123,16 @@ export interface ResumeContent {
   education: ResumeColumn;
 }
 
+export interface SkillItem {
+  name: string;
+  icon: IconName;
+  level: number;
+}
+
+export interface SkillsContent extends SectionIntro {
+  items: SkillItem[];
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -136,4 +146,5 @@ export interface SiteContent {
   services: ServicesContent;
   projects: ProjectsContent;
   resume: ResumeContent;
+  skills: SkillsContent;
 }
