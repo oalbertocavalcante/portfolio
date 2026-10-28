@@ -171,11 +171,7 @@ const categories = projects.categories.filter((category) => usedCategories.has(c
     width: 0;
     height: 0;
     border-radius: var(--radius-pill);
-    background-image: linear-gradient(
-      260deg,
-      var(--color-accent-deep) 0%,
-      var(--color-accent-emphasis) 100%
-    );
+    background-image: var(--gradient-emphasis);
     transition: all 0.5s ease;
   }
 
@@ -265,11 +261,7 @@ const categories = projects.categories.filter((category) => usedCategories.has(c
     margin: 0 auto;
     padding: 20px 50px 20px 20px;
     border-radius: 15px;
-    background-image: linear-gradient(
-      260deg,
-      var(--color-accent-deep) 0%,
-      var(--color-accent-emphasis) 100%
-    );
+    background-image: var(--gradient-emphasis);
     color: var(--color-on-emphasis);
     opacity: 0;
     visibility: hidden;

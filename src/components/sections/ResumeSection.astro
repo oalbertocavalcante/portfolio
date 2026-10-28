@@ -96,11 +96,7 @@ const labelledBy = columns.map((entry) => `resume-${entry.key}-title`).join(' ')
     inset: 0;
     z-index: -1;
     border-radius: 20px;
-    background-image: linear-gradient(
-      260deg,
-      var(--color-accent-deep) 0%,
-      var(--color-accent-emphasis) 100%
-    );
+    background-image: var(--gradient-emphasis);
     opacity: 0;
     transition: opacity 0.5s linear;
   }

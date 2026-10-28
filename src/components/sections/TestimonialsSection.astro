@@ -185,19 +185,15 @@ const items = testimonials.items.map((item) => {
     border-radius: 50%;
     background-color: transparent;
     background-clip: content-box;
-    background-image: linear-gradient(rgb(217 217 217 / 0.2), rgb(217 217 217 / 0.2));
+    background-image: linear-gradient(
+      color-mix(in srgb, var(--color-text-muted) 40%, transparent),
+      color-mix(in srgb, var(--color-text-muted) 40%, transparent)
+    );
     cursor: pointer;
     transition: background-image var(--duration-fast);
   }
 
-  :global(:root[data-theme='light']) .testimonials__pagination :global(.swiper-pagination-bullet) {
-    background-image: linear-gradient(rgb(116 119 121 / 0.4), rgb(116 119 121 / 0.4));
-  }
-
-  .testimonials__pagination :global(.swiper-pagination-bullet-active),
-  :global(:root[data-theme='light'])
-    .testimonials__pagination
-    :global(.swiper-pagination-bullet-active) {
+  .testimonials__pagination :global(.swiper-pagination-bullet-active) {
     background-image: linear-gradient(var(--color-accent), var(--color-accent));
   }
 
