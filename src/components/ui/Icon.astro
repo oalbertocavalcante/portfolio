@@ -1,0 +1,57 @@
+---
+import { getIconData, iconToSVG, replaceIDs } from '@iconify/utils';
+import type { IconifyJSON } from '@iconify/types';
+import bootstrapIcons from '@iconify-json/bi/icons.json';
+import devicon from '@iconify-json/devicon/icons.json';
+
+const collections: Record<string, IconifyJSON> = {
+  bi: bootstrapIcons as IconifyJSON,
+  devicon: devicon as IconifyJSON,
+};
+
+export type IconName = `${'bi' | 'devicon'}:${string}`;
+
+interface Props {
+  name: IconName;
+  label?: string;
+  class?: string;
+}
+
+const { name, label, class: className } = Astro.props;
+const [prefix = '', iconName = ''] = name.split(':');
+const collection = collections[prefix];
+const data = collection ? getIconData(collection, iconName) : null;
+
+if (!data) {
+  throw new Error(`Ícone não encontrado: ${name}`);
+}
+
+const svg = iconToSVG(data, { height: '1em' });
+
+if (/\sstyle\s*=/.test(svg.body)) {
+  throw new Error(`Ícone com estilo inline é incompatível com a CSP: ${name}`);
+}
+
+const body = replaceIDs(svg.body);
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={svg.attributes.viewBox}
+  width="1em"
+  height="1em"
+  class:list={['icon', className]}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+  set:html={body}
+/>
+
+<style>
+  .icon {
+    display: inline-block;
+    flex-shrink: 0;
+    vertical-align: -0.125em;
+  }
+</style>

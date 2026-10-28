@@ -6,6 +6,8 @@ export interface PageMeta {
 
 export interface InterfaceText {
   skipToContent: string;
+  loading: string;
+  backToTop: string;
 }
 
 export interface SiteContent {

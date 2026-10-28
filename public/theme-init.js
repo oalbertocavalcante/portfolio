@@ -1,4 +1,5 @@
 (function () {
+  var root = document.documentElement;
   var theme = 'dark';
   try {
     var saved = window.localStorage.getItem('theme');
@@ -6,5 +7,6 @@
   } catch (error) {
     theme = 'dark';
   }
-  document.documentElement.setAttribute('data-theme', theme);
+  root.setAttribute('data-theme', theme);
+  root.classList.add('has-js');
 })();

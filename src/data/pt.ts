@@ -9,5 +9,7 @@ export const pt = {
   },
   ui: {
     skipToContent: 'Pular para o conteúdo',
+    loading: 'Carregando',
+    backToTop: 'Voltar ao topo',
   },
 } satisfies SiteContent;

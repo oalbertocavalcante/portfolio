@@ -9,5 +9,7 @@ export const en = {
   },
   ui: {
     skipToContent: 'Skip to content',
+    loading: 'Loading',
+    backToTop: 'Back to top',
   },
 } satisfies SiteContent;

@@ -18,6 +18,10 @@ body {
   min-height: 100%;
 }
 
+html.is-scroll-locked {
+  overflow: hidden;
+}
+
 body {
   font-family: var(--font-sans);
   font-size: var(--fs-body);
