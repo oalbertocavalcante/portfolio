@@ -106,6 +106,23 @@ export interface ProjectsContent extends SectionIntro {
   items: ProjectItem[];
 }
 
+export interface ResumeEntry {
+  period: string;
+  title: string;
+  place: string;
+}
+
+export interface ResumeColumn {
+  title: string;
+  icon: IconName;
+  items: ResumeEntry[];
+}
+
+export interface ResumeContent {
+  experience: ResumeColumn;
+  education: ResumeColumn;
+}
+
 export interface SiteContent {
   meta: PageMeta;
   ui: InterfaceText;
@@ -118,4 +135,5 @@ export interface SiteContent {
   highlights: HighlightsContent;
   services: ServicesContent;
   projects: ProjectsContent;
+  resume: ResumeContent;
 }

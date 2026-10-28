@@ -1,0 +1,182 @@
+---
+import PageSection from '@/components/layout/PageSection.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import type { SiteContent } from '@/data/types';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const { resume, anchors } = content;
+
+const columns = [
+  { key: 'experience', column: resume.experience, reveal: 'fade-right' },
+  { key: 'education', column: resume.education, reveal: 'fade-left' },
+].filter((entry) => entry.column.items.length > 0);
+const labelledBy = columns.map((entry) => `resume-${entry.key}-title`).join(' ');
+---
+
+{columns.length > 0 && (
+  <PageSection
+    section="resume"
+    anchor={anchors.resume}
+    tone="band-alt"
+    labelledBy={labelledBy}
+    class="resume"
+  >
+    <div class="container-wide resume__grid">
+      {columns.map(({ key, column, reveal }) => (
+        <div class="resume__column">
+          <SectionHeading
+            id={`resume-${key}-title`}
+            title={column.title}
+            icon={column.icon}
+            align="start"
+            class="resume__heading"
+          />
+          <ol class="resume__list list-reset">
+            {column.items.map((item, index) => (
+              <li
+                class="resume-card"
+                data-reveal={reveal}
+                data-reveal-delay={String(Math.min(index + 3, 9))}
+              >
+                <p class="resume-card__period">{item.period}</p>
+                <h3 class="resume-card__title">{item.title}</h3>
+                <p class="resume-card__place">{item.place}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+  </PageSection>
+)}
+
+<style>
+  .resume {
+    overflow-x: clip;
+    padding: var(--space-section) 0;
+  }
+
+  .resume__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+  }
+
+  .resume__column {
+    width: 48%;
+  }
+
+  .resume :global(.resume__heading) {
+    margin-bottom: 50px;
+  }
+
+  .resume__list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    max-width: 540px;
+  }
+
+  .resume-card {
+    position: relative;
+    z-index: 1;
+    padding: 20px 30px;
+    border-radius: 20px;
+    background-color: var(--color-surface);
+  }
+
+  .resume-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 20px;
+    background-image: linear-gradient(
+      260deg,
+      var(--color-accent-deep) 0%,
+      var(--color-accent-emphasis) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.5s linear;
+  }
+
+  .resume-card:hover::before {
+    opacity: 1;
+  }
+
+  .resume-card__period {
+    margin-bottom: 8px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    transition: color var(--duration-base) ease-in-out;
+  }
+
+  .resume-card__title {
+    margin-bottom: 8px;
+    font-size: 1.5625rem;
+    text-transform: uppercase;
+    transition: color var(--duration-base) ease-in-out;
+  }
+
+  .resume-card__place {
+    margin-bottom: 0;
+    transition: color var(--duration-base) ease-in-out;
+  }
+
+  .resume-card:hover .resume-card__period,
+  .resume-card:hover .resume-card__title,
+  .resume-card:hover .resume-card__place {
+    color: var(--color-on-emphasis);
+  }
+
+  @media (max-width: 1399.98px) {
+    .resume-card__title {
+      font-size: 1.4375rem;
+    }
+  }
+
+  @media (max-width: 1199.98px) {
+    .resume__grid {
+      gap: 25px;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .resume :global(.resume__heading) {
+      margin-bottom: 40px;
+    }
+
+    .resume-card__period {
+      font-size: 0.9375rem;
+    }
+
+    .resume-card__title {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .resume__grid {
+      gap: 60px 0;
+    }
+
+    .resume__column {
+      width: 100%;
+    }
+
+    .resume__list {
+      max-width: none;
+    }
+
+    .resume-card__title {
+      margin-bottom: 0;
+      font-size: 1.125rem;
+    }
+  }
+</style>

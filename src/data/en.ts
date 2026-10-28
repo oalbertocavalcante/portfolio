@@ -156,4 +156,34 @@ export const en = {
       },
     ],
   },
+  resume: {
+    experience: {
+      title: 'My experience',
+      icon: 'bi:briefcase',
+      items: [
+        { period: '2025 - Present', title: 'Software developer', place: 'Company, Brasília' },
+        { period: '2024 - 2025', title: 'Development intern', place: 'Company, Brasília' },
+        {
+          period: '2023 - 2024',
+          title: 'Programming teaching assistant',
+          place: 'University of Brasília',
+        },
+        { period: '2022 - 2023', title: 'Academic projects', place: 'University of Brasília' },
+      ],
+    },
+    education: {
+      title: 'My education',
+      icon: 'bi:mortarboard',
+      items: [
+        {
+          period: '2022 - Present',
+          title: 'Computer Science degree',
+          place: 'University of Brasília',
+        },
+        { period: '2024', title: 'Security certification', place: 'Certification body' },
+        { period: '2023', title: 'Web development course', place: 'Learning platform' },
+        { period: '2021', title: 'High school', place: 'School, Brasília' },
+      ],
+    },
+  },
 } satisfies SiteContent;

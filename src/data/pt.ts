@@ -160,4 +160,38 @@ export const pt = {
       },
     ],
   },
+  resume: {
+    experience: {
+      title: 'Minha experiência',
+      icon: 'bi:briefcase',
+      items: [
+        { period: '2025 - Atual', title: 'Desenvolvedor de software', place: 'Empresa, Brasília' },
+        {
+          period: '2024 - 2025',
+          title: 'Estagiário de desenvolvimento',
+          place: 'Empresa, Brasília',
+        },
+        {
+          period: '2023 - 2024',
+          title: 'Monitor de programação',
+          place: 'Universidade de Brasília',
+        },
+        { period: '2022 - 2023', title: 'Projetos acadêmicos', place: 'Universidade de Brasília' },
+      ],
+    },
+    education: {
+      title: 'Minha formação',
+      icon: 'bi:mortarboard',
+      items: [
+        {
+          period: '2022 - Atual',
+          title: 'Graduação em Computação',
+          place: 'Universidade de Brasília',
+        },
+        { period: '2024', title: 'Certificação em segurança', place: 'Instituição certificadora' },
+        { period: '2023', title: 'Curso de desenvolvimento web', place: 'Plataforma de ensino' },
+        { period: '2021', title: 'Ensino médio', place: 'Escola, Brasília' },
+      ],
+    },
+  },
 } satisfies SiteContent;
